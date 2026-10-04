@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as UseCasesRouteImport } from './routes/use-cases'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
@@ -26,6 +29,21 @@ const IndexRoute = IndexRouteImport.update({
 const CategoriesRoute = CategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankingsRoute = RankingsRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolsRoute = ToolsRouteImport.update({
@@ -62,6 +80,9 @@ const UseCasesSlugRoute = UseCasesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/rankings': typeof RankingsRoute
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
   '/categories/$slug': typeof CategoriesSlugRoute
@@ -72,6 +93,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/rankings': typeof RankingsRoute
   '/use-cases': typeof UseCasesRouteWithChildren
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
@@ -82,6 +106,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/rankings': typeof RankingsRoute
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
   '/categories/$slug': typeof CategoriesSlugRoute
@@ -94,6 +121,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/categories'
+    | '/community'
+    | '/compare'
+    | '/rankings'
     | '/tools'
     | '/use-cases'
     | '/categories/$slug'
@@ -104,6 +134,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/categories'
+    | '/community'
+    | '/compare'
+    | '/rankings'
     | '/use-cases'
     | '/categories/$slug'
     | '/tools/$slug'
@@ -113,6 +146,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/categories'
+    | '/community'
+    | '/compare'
+    | '/rankings'
     | '/tools'
     | '/use-cases'
     | '/categories/$slug'
@@ -124,6 +160,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CategoriesRoute: typeof CategoriesRouteWithChildren
+  CommunityRoute: typeof CommunityRoute
+  CompareRoute: typeof CompareRoute
+  RankingsRoute: typeof RankingsRoute
   ToolsRoute: typeof ToolsRouteWithChildren
   UseCasesRoute: typeof UseCasesRouteWithChildren
 }
@@ -142,6 +181,27 @@ declare module '@tanstack/react-router' {
       path: '/categories'
       fullPath: '/categories'
       preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rankings': {
+      id: '/rankings'
+      path: '/rankings'
+      fullPath: '/rankings'
+      preLoaderRoute: typeof RankingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools': {
@@ -228,6 +288,9 @@ const UseCasesRouteWithChildren = UseCasesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CategoriesRoute: CategoriesRouteWithChildren,
+  CommunityRoute: CommunityRoute,
+  CompareRoute: CompareRoute,
+  RankingsRoute: RankingsRoute,
   ToolsRoute: ToolsRouteWithChildren,
   UseCasesRoute: UseCasesRouteWithChildren,
 }

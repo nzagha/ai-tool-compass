@@ -1,4 +1,4 @@
-- [ ] Build editorial design system, navigation, and shared mock data/models.
-- [ ] Build homepage, directory, tool detail, and interactive compare/save flows.
-- [ ] Build category, use-case, rankings, community, submit, vendor, saved, and login screens.
+- [x] Build editorial design system, navigation, and shared mock data/models.
+- [x] Build homepage, directory, tool detail, and interactive compare/save flows.
+- [x] Build category, use-case, rankings, community, submit, vendor, saved, and login screens.
 - [ ] Verify routes and responsive preview; document demo-only limits.
