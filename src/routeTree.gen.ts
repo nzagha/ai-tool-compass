@@ -10,33 +10,51 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsIndexRoute = ToolsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ToolsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/tools': typeof ToolsRouteWithChildren
+  '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/tools': typeof ToolsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/tools': typeof ToolsRouteWithChildren
+  '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/tools' | '/tools/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/tools'
+  id: '__root__' | '/' | '/tools' | '/tools/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ToolsRoute: typeof ToolsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +66,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/': {
+      id: '/tools/'
+      path: '/'
+      fullPath: '/tools/'
+      preLoaderRoute: typeof ToolsIndexRouteImport
+      parentRoute: typeof ToolsRoute
+    }
   }
 }
 
+interface ToolsRouteChildren {
+  ToolsIndexRoute: typeof ToolsIndexRoute
+}
+
+const ToolsRouteChildren: ToolsRouteChildren = {
+  ToolsIndexRoute: ToolsIndexRoute,
+}
+
+const ToolsRouteWithChildren = ToolsRoute._addFileChildren(ToolsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ToolsRoute: ToolsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
