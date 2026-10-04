@@ -10,33 +10,213 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as SavedRouteImport } from './routes/saved'
+import { Route as SubmitRouteImport } from './routes/submit'
+import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as UseCasesRouteImport } from './routes/use-cases'
+import { Route as VendorRouteImport } from './routes/vendor'
+import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
+import { Route as ToolsIndexRouteImport } from './routes/tools.index'
+import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
+import { Route as UseCasesSlugRouteImport } from './routes/use-cases.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankingsRoute = RankingsRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SavedRoute = SavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubmitRoute = SubmitRouteImport.update({
+  id: '/submit',
+  path: '/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UseCasesRoute = UseCasesRouteImport.update({
+  id: '/use-cases',
+  path: '/use-cases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VendorRoute = VendorRouteImport.update({
+  id: '/vendor',
+  path: '/vendor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CategoriesRoute,
+} as any)
+const ToolsIndexRoute = ToolsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ToolsRoute,
+} as any)
+const ToolsSlugRoute = ToolsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ToolsRoute,
+} as any)
+const UseCasesSlugRoute = UseCasesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => UseCasesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/categories': typeof CategoriesRouteWithChildren
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/login': typeof LoginRoute
+  '/rankings': typeof RankingsRoute
+  '/saved': typeof SavedRoute
+  '/submit': typeof SubmitRoute
+  '/tools': typeof ToolsRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/vendor': typeof VendorRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
+  '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/categories': typeof CategoriesRouteWithChildren
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/login': typeof LoginRoute
+  '/rankings': typeof RankingsRoute
+  '/saved': typeof SavedRoute
+  '/submit': typeof SubmitRoute
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/vendor': typeof VendorRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
+  '/tools': typeof ToolsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/categories': typeof CategoriesRouteWithChildren
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/login': typeof LoginRoute
+  '/rankings': typeof RankingsRoute
+  '/saved': typeof SavedRoute
+  '/submit': typeof SubmitRoute
+  '/tools': typeof ToolsRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/vendor': typeof VendorRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
+  '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/categories'
+    | '/community'
+    | '/compare'
+    | '/login'
+    | '/rankings'
+    | '/saved'
+    | '/submit'
+    | '/tools'
+    | '/use-cases'
+    | '/vendor'
+    | '/categories/$slug'
+    | '/tools/$slug'
+    | '/use-cases/$slug'
+    | '/tools/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/categories'
+    | '/community'
+    | '/compare'
+    | '/login'
+    | '/rankings'
+    | '/saved'
+    | '/submit'
+    | '/use-cases'
+    | '/vendor'
+    | '/categories/$slug'
+    | '/tools/$slug'
+    | '/use-cases/$slug'
+    | '/tools'
+  id:
+    | '__root__'
+    | '/'
+    | '/categories'
+    | '/community'
+    | '/compare'
+    | '/login'
+    | '/rankings'
+    | '/saved'
+    | '/submit'
+    | '/tools'
+    | '/use-cases'
+    | '/vendor'
+    | '/categories/$slug'
+    | '/tools/$slug'
+    | '/use-cases/$slug'
+    | '/tools/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CategoriesRoute: typeof CategoriesRouteWithChildren
+  CommunityRoute: typeof CommunityRoute
+  CompareRoute: typeof CompareRoute
+  LoginRoute: typeof LoginRoute
+  RankingsRoute: typeof RankingsRoute
+  SavedRoute: typeof SavedRoute
+  SubmitRoute: typeof SubmitRoute
+  ToolsRoute: typeof ToolsRouteWithChildren
+  UseCasesRoute: typeof UseCasesRouteWithChildren
+  VendorRoute: typeof VendorRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +228,155 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rankings': {
+      id: '/rankings'
+      path: '/rankings'
+      fullPath: '/rankings'
+      preLoaderRoute: typeof RankingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/submit': {
+      id: '/submit'
+      path: '/submit'
+      fullPath: '/submit'
+      preLoaderRoute: typeof SubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/use-cases': {
+      id: '/use-cases'
+      path: '/use-cases'
+      fullPath: '/use-cases'
+      preLoaderRoute: typeof UseCasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vendor': {
+      id: '/vendor'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof VendorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories/$slug': {
+      id: '/categories/$slug'
+      path: '/$slug'
+      fullPath: '/categories/$slug'
+      preLoaderRoute: typeof CategoriesSlugRouteImport
+      parentRoute: typeof CategoriesRoute
+    }
+    '/tools/': {
+      id: '/tools/'
+      path: '/'
+      fullPath: '/tools/'
+      preLoaderRoute: typeof ToolsIndexRouteImport
+      parentRoute: typeof ToolsRoute
+    }
+    '/tools/$slug': {
+      id: '/tools/$slug'
+      path: '/$slug'
+      fullPath: '/tools/$slug'
+      preLoaderRoute: typeof ToolsSlugRouteImport
+      parentRoute: typeof ToolsRoute
+    }
+    '/use-cases/$slug': {
+      id: '/use-cases/$slug'
+      path: '/$slug'
+      fullPath: '/use-cases/$slug'
+      preLoaderRoute: typeof UseCasesSlugRouteImport
+      parentRoute: typeof UseCasesRoute
+    }
   }
 }
 
+interface CategoriesRouteChildren {
+  CategoriesSlugRoute: typeof CategoriesSlugRoute
+}
+
+const CategoriesRouteChildren: CategoriesRouteChildren = {
+  CategoriesSlugRoute: CategoriesSlugRoute,
+}
+
+const CategoriesRouteWithChildren = CategoriesRoute._addFileChildren(
+  CategoriesRouteChildren,
+)
+
+interface ToolsRouteChildren {
+  ToolsSlugRoute: typeof ToolsSlugRoute
+  ToolsIndexRoute: typeof ToolsIndexRoute
+}
+
+const ToolsRouteChildren: ToolsRouteChildren = {
+  ToolsSlugRoute: ToolsSlugRoute,
+  ToolsIndexRoute: ToolsIndexRoute,
+}
+
+const ToolsRouteWithChildren = ToolsRoute._addFileChildren(ToolsRouteChildren)
+
+interface UseCasesRouteChildren {
+  UseCasesSlugRoute: typeof UseCasesSlugRoute
+}
+
+const UseCasesRouteChildren: UseCasesRouteChildren = {
+  UseCasesSlugRoute: UseCasesSlugRoute,
+}
+
+const UseCasesRouteWithChildren = UseCasesRoute._addFileChildren(
+  UseCasesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CategoriesRoute: CategoriesRouteWithChildren,
+  CommunityRoute: CommunityRoute,
+  CompareRoute: CompareRoute,
+  LoginRoute: LoginRoute,
+  RankingsRoute: RankingsRoute,
+  SavedRoute: SavedRoute,
+  SubmitRoute: SubmitRoute,
+  ToolsRoute: ToolsRouteWithChildren,
+  UseCasesRoute: UseCasesRouteWithChildren,
+  VendorRoute: VendorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
