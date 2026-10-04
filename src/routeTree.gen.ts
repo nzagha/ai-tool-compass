@@ -10,12 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as UseCasesRouteImport } from './routes/use-cases'
+import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
+import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
+import { Route as UseCasesSlugRouteImport } from './routes/use-cases.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolsRoute = ToolsRouteImport.update({
@@ -23,38 +33,99 @@ const ToolsRoute = ToolsRouteImport.update({
   path: '/tools',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UseCasesRoute = UseCasesRouteImport.update({
+  id: '/use-cases',
+  path: '/use-cases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CategoriesRoute,
+} as any)
 const ToolsIndexRoute = ToolsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ToolsRoute,
 } as any)
+const ToolsSlugRoute = ToolsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ToolsRoute,
+} as any)
+const UseCasesSlugRoute = UseCasesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => UseCasesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/categories': typeof CategoriesRouteWithChildren
   '/tools': typeof ToolsRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
   '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/categories': typeof CategoriesRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
   '/tools': typeof ToolsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/categories': typeof CategoriesRouteWithChildren
   '/tools': typeof ToolsRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
   '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tools' | '/tools/'
+  fullPaths:
+    | '/'
+    | '/categories'
+    | '/tools'
+    | '/use-cases'
+    | '/categories/$slug'
+    | '/tools/$slug'
+    | '/use-cases/$slug'
+    | '/tools/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tools'
-  id: '__root__' | '/' | '/tools' | '/tools/'
+  to:
+    | '/'
+    | '/categories'
+    | '/use-cases'
+    | '/categories/$slug'
+    | '/tools/$slug'
+    | '/use-cases/$slug'
+    | '/tools'
+  id:
+    | '__root__'
+    | '/'
+    | '/categories'
+    | '/tools'
+    | '/use-cases'
+    | '/categories/$slug'
+    | '/tools/$slug'
+    | '/use-cases/$slug'
+    | '/tools/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CategoriesRoute: typeof CategoriesRouteWithChildren
   ToolsRoute: typeof ToolsRouteWithChildren
+  UseCasesRoute: typeof UseCasesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -66,12 +137,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools': {
       id: '/tools'
       path: '/tools'
       fullPath: '/tools'
       preLoaderRoute: typeof ToolsRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/use-cases': {
+      id: '/use-cases'
+      path: '/use-cases'
+      fullPath: '/use-cases'
+      preLoaderRoute: typeof UseCasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories/$slug': {
+      id: '/categories/$slug'
+      path: '/$slug'
+      fullPath: '/categories/$slug'
+      preLoaderRoute: typeof CategoriesSlugRouteImport
+      parentRoute: typeof CategoriesRoute
     }
     '/tools/': {
       id: '/tools/'
@@ -80,22 +172,64 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsIndexRouteImport
       parentRoute: typeof ToolsRoute
     }
+    '/tools/$slug': {
+      id: '/tools/$slug'
+      path: '/$slug'
+      fullPath: '/tools/$slug'
+      preLoaderRoute: typeof ToolsSlugRouteImport
+      parentRoute: typeof ToolsRoute
+    }
+    '/use-cases/$slug': {
+      id: '/use-cases/$slug'
+      path: '/$slug'
+      fullPath: '/use-cases/$slug'
+      preLoaderRoute: typeof UseCasesSlugRouteImport
+      parentRoute: typeof UseCasesRoute
+    }
   }
 }
 
+interface CategoriesRouteChildren {
+  CategoriesSlugRoute: typeof CategoriesSlugRoute
+}
+
+const CategoriesRouteChildren: CategoriesRouteChildren = {
+  CategoriesSlugRoute: CategoriesSlugRoute,
+}
+
+const CategoriesRouteWithChildren = CategoriesRoute._addFileChildren(
+  CategoriesRouteChildren,
+)
+
 interface ToolsRouteChildren {
+  ToolsSlugRoute: typeof ToolsSlugRoute
   ToolsIndexRoute: typeof ToolsIndexRoute
 }
 
 const ToolsRouteChildren: ToolsRouteChildren = {
+  ToolsSlugRoute: ToolsSlugRoute,
   ToolsIndexRoute: ToolsIndexRoute,
 }
 
 const ToolsRouteWithChildren = ToolsRoute._addFileChildren(ToolsRouteChildren)
 
+interface UseCasesRouteChildren {
+  UseCasesSlugRoute: typeof UseCasesSlugRoute
+}
+
+const UseCasesRouteChildren: UseCasesRouteChildren = {
+  UseCasesSlugRoute: UseCasesSlugRoute,
+}
+
+const UseCasesRouteWithChildren = UseCasesRoute._addFileChildren(
+  UseCasesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CategoriesRoute: CategoriesRouteWithChildren,
   ToolsRoute: ToolsRouteWithChildren,
+  UseCasesRoute: UseCasesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
