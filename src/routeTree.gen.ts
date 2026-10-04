@@ -13,9 +13,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as RankingsRouteImport } from './routes/rankings'
+import { Route as SavedRouteImport } from './routes/saved'
+import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as UseCasesRouteImport } from './routes/use-cases'
+import { Route as VendorRouteImport } from './routes/vendor'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
@@ -41,9 +45,24 @@ const CompareRoute = CompareRouteImport.update({
   path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RankingsRoute = RankingsRouteImport.update({
   id: '/rankings',
   path: '/rankings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SavedRoute = SavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubmitRoute = SubmitRouteImport.update({
+  id: '/submit',
+  path: '/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolsRoute = ToolsRouteImport.update({
@@ -54,6 +73,11 @@ const ToolsRoute = ToolsRouteImport.update({
 const UseCasesRoute = UseCasesRouteImport.update({
   id: '/use-cases',
   path: '/use-cases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VendorRoute = VendorRouteImport.update({
+  id: '/vendor',
+  path: '/vendor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
@@ -82,9 +106,13 @@ export interface FileRoutesByFullPath {
   '/categories': typeof CategoriesRouteWithChildren
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
+  '/login': typeof LoginRoute
   '/rankings': typeof RankingsRoute
+  '/saved': typeof SavedRoute
+  '/submit': typeof SubmitRoute
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
+  '/vendor': typeof VendorRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
@@ -95,8 +123,12 @@ export interface FileRoutesByTo {
   '/categories': typeof CategoriesRouteWithChildren
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
+  '/login': typeof LoginRoute
   '/rankings': typeof RankingsRoute
+  '/saved': typeof SavedRoute
+  '/submit': typeof SubmitRoute
   '/use-cases': typeof UseCasesRouteWithChildren
+  '/vendor': typeof VendorRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
@@ -108,9 +140,13 @@ export interface FileRoutesById {
   '/categories': typeof CategoriesRouteWithChildren
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
+  '/login': typeof LoginRoute
   '/rankings': typeof RankingsRoute
+  '/saved': typeof SavedRoute
+  '/submit': typeof SubmitRoute
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
+  '/vendor': typeof VendorRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
@@ -123,9 +159,13 @@ export interface FileRouteTypes {
     | '/categories'
     | '/community'
     | '/compare'
+    | '/login'
     | '/rankings'
+    | '/saved'
+    | '/submit'
     | '/tools'
     | '/use-cases'
+    | '/vendor'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
@@ -136,8 +176,12 @@ export interface FileRouteTypes {
     | '/categories'
     | '/community'
     | '/compare'
+    | '/login'
     | '/rankings'
+    | '/saved'
+    | '/submit'
     | '/use-cases'
+    | '/vendor'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
@@ -148,9 +192,13 @@ export interface FileRouteTypes {
     | '/categories'
     | '/community'
     | '/compare'
+    | '/login'
     | '/rankings'
+    | '/saved'
+    | '/submit'
     | '/tools'
     | '/use-cases'
+    | '/vendor'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
@@ -162,9 +210,13 @@ export interface RootRouteChildren {
   CategoriesRoute: typeof CategoriesRouteWithChildren
   CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
+  LoginRoute: typeof LoginRoute
   RankingsRoute: typeof RankingsRoute
+  SavedRoute: typeof SavedRoute
+  SubmitRoute: typeof SubmitRoute
   ToolsRoute: typeof ToolsRouteWithChildren
   UseCasesRoute: typeof UseCasesRouteWithChildren
+  VendorRoute: typeof VendorRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -197,11 +249,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rankings': {
       id: '/rankings'
       path: '/rankings'
       fullPath: '/rankings'
       preLoaderRoute: typeof RankingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/submit': {
+      id: '/submit'
+      path: '/submit'
+      fullPath: '/submit'
+      preLoaderRoute: typeof SubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools': {
@@ -216,6 +289,13 @@ declare module '@tanstack/react-router' {
       path: '/use-cases'
       fullPath: '/use-cases'
       preLoaderRoute: typeof UseCasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vendor': {
+      id: '/vendor'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof VendorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/categories/$slug': {
@@ -290,9 +370,13 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesRoute: CategoriesRouteWithChildren,
   CommunityRoute: CommunityRoute,
   CompareRoute: CompareRoute,
+  LoginRoute: LoginRoute,
   RankingsRoute: RankingsRoute,
+  SavedRoute: SavedRoute,
+  SubmitRoute: SubmitRoute,
   ToolsRoute: ToolsRouteWithChildren,
   UseCasesRoute: UseCasesRouteWithChildren,
+  VendorRoute: VendorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
