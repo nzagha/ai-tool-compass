@@ -11,3 +11,4 @@
 
 - Keep demo directory content and typed domain models together in `src/lib/catalog.ts` so a database-backed repository can replace it without rewriting views.
 - Keep shared discovery state in a client-side context in `src/components/app-shell.tsx` because the current MVP has no connected backend.
+- Keep official brand assets behind `src/components/brand-logo.tsx` and semantic global tokens so the identity stays consistent across routes.
