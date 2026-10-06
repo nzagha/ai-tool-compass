@@ -1,5 +1,5 @@
 - [x] Build editorial design system, navigation, and shared mock data/models.
 - [x] Build homepage, directory, tool detail, and interactive compare/save flows.
 - [x] Build category, use-case, rankings, community, submit, vendor, saved, and login screens.
-- [ ] Verify routes and responsive preview; document demo-only limits.
-- [ ] Apply and verify the official aiBean logo, typography, palette, components, and voice across all screens.
+- [x] Verify routes and responsive preview; document demo-only limits.
+- [x] Apply and verify the official aiBean logo, typography, palette, components, and voice across all screens.
