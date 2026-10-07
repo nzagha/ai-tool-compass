@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as ClaimRouteImport } from './routes/claim'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as SavedRouteImport } from './routes/saved'
+import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as UseCasesRouteImport } from './routes/use-cases'
@@ -33,6 +35,11 @@ const IndexRoute = IndexRouteImport.update({
 const CategoriesRoute = CategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClaimRoute = ClaimRouteImport.update({
+  id: '/claim',
+  path: '/claim',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommunityRoute = CommunityRouteImport.update({
@@ -58,6 +65,11 @@ const RankingsRoute = RankingsRouteImport.update({
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillsRoute = SkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubmitRoute = SubmitRouteImport.update({
@@ -104,11 +116,13 @@ const UseCasesSlugRoute = UseCasesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/claim': typeof ClaimRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/login': typeof LoginRoute
   '/rankings': typeof RankingsRoute
   '/saved': typeof SavedRoute
+  '/skills': typeof SkillsRoute
   '/submit': typeof SubmitRoute
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
@@ -121,11 +135,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/claim': typeof ClaimRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/login': typeof LoginRoute
   '/rankings': typeof RankingsRoute
   '/saved': typeof SavedRoute
+  '/skills': typeof SkillsRoute
   '/submit': typeof SubmitRoute
   '/use-cases': typeof UseCasesRouteWithChildren
   '/vendor': typeof VendorRoute
@@ -138,11 +154,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/claim': typeof ClaimRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/login': typeof LoginRoute
   '/rankings': typeof RankingsRoute
   '/saved': typeof SavedRoute
+  '/skills': typeof SkillsRoute
   '/submit': typeof SubmitRoute
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
@@ -157,11 +175,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/categories'
+    | '/claim'
     | '/community'
     | '/compare'
     | '/login'
     | '/rankings'
     | '/saved'
+    | '/skills'
     | '/submit'
     | '/tools'
     | '/use-cases'
@@ -174,11 +194,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/categories'
+    | '/claim'
     | '/community'
     | '/compare'
     | '/login'
     | '/rankings'
     | '/saved'
+    | '/skills'
     | '/submit'
     | '/use-cases'
     | '/vendor'
@@ -190,11 +212,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/categories'
+    | '/claim'
     | '/community'
     | '/compare'
     | '/login'
     | '/rankings'
     | '/saved'
+    | '/skills'
     | '/submit'
     | '/tools'
     | '/use-cases'
@@ -208,11 +232,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CategoriesRoute: typeof CategoriesRouteWithChildren
+  ClaimRoute: typeof ClaimRoute
   CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
   LoginRoute: typeof LoginRoute
   RankingsRoute: typeof RankingsRoute
   SavedRoute: typeof SavedRoute
+  SkillsRoute: typeof SkillsRoute
   SubmitRoute: typeof SubmitRoute
   ToolsRoute: typeof ToolsRouteWithChildren
   UseCasesRoute: typeof UseCasesRouteWithChildren
@@ -233,6 +259,13 @@ declare module '@tanstack/react-router' {
       path: '/categories'
       fullPath: '/categories'
       preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/claim': {
+      id: '/claim'
+      path: '/claim'
+      fullPath: '/claim'
+      preLoaderRoute: typeof ClaimRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/community': {
@@ -268,6 +301,13 @@ declare module '@tanstack/react-router' {
       path: '/saved'
       fullPath: '/saved'
       preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/submit': {
@@ -368,11 +408,13 @@ const UseCasesRouteWithChildren = UseCasesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CategoriesRoute: CategoriesRouteWithChildren,
+  ClaimRoute: ClaimRoute,
   CommunityRoute: CommunityRoute,
   CompareRoute: CompareRoute,
   LoginRoute: LoginRoute,
   RankingsRoute: RankingsRoute,
   SavedRoute: SavedRoute,
+  SkillsRoute: SkillsRoute,
   SubmitRoute: SubmitRoute,
   ToolsRoute: ToolsRouteWithChildren,
   UseCasesRoute: UseCasesRouteWithChildren,
