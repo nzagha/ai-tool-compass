@@ -3,3 +3,4 @@
 - [x] Build category, use-case, rankings, community, submit, vendor, saved, and login screens.
 - [x] Verify routes and responsive preview; document demo-only limits.
 - [x] Apply and verify the official aiBean logo, typography, palette, components, and voice across all screens.
+- [ ] Add and verify an in-place interactive hero preview with remembered exploration and spring feedback.
