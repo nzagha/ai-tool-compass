@@ -13,10 +13,10 @@ const initial: PreviewState = { selected: 'chatgpt', explored: [] };
 function validState(value: unknown): value is PreviewState {
   if (!value || typeof value !== 'object') return false;
   const state = value as Record<string, unknown>;
-  return typeof state.selected === 'string' && picks.some(t => t.slug === state.selected)
-    && Array.isArray(state.explored) && state.explored.length <= picks.length
-    && state.explored.every(slug => typeof slug === 'string' && picks.some(t => t.slug === slug))
-    && new Set(state.explored).size === state.explored.length;
+  return typeof state['selected'] === 'string' && picks.some(t => t.slug === state['selected'])
+    && Array.isArray(state['explored']) && state['explored'].length <= picks.length
+    && state['explored'].every(slug => typeof slug === 'string' && picks.some(t => t.slug === slug))
+    && new Set(state['explored']).size === state['explored'].length;
 }
 
 export function HeroPreview() {
@@ -42,7 +42,7 @@ export function HeroPreview() {
       </div>
       <h2 className="font-display text-2xl font-bold leading-tight mt-3">Less scrolling.<br/><span className="text-highlight">More shipping.</span></h2>
       <div className="grid grid-cols-3 gap-1 mt-4" role="group" aria-label="Preview tools">
-        {picks.map(pick => <motion.div key={pick.slug} whileHover={reduced ? undefined : { y: -2 }} whileTap={reduced ? undefined : { scale: .97 }} transition={spring}>
+        {picks.map(pick => <motion.div key={pick.slug} whileHover={reduced ? {} : { y: -2 }} whileTap={reduced ? {} : { scale: .97 }} transition={spring}>
           <Button variant={value.selected === pick.slug ? 'default' : 'ghost'} className="w-full px-1 h-8 text-[11px] gap-1" aria-pressed={value.selected === pick.slug} onClick={() => inspect(pick.slug)}>
             {pick.name}{value.explored.includes(pick.slug) && <Check className="size-3" />}
           </Button>
@@ -58,7 +58,7 @@ export function HeroPreview() {
         </AnimatePresence>
       </div>
       <div className="flex items-center gap-2 mt-3">
-        <motion.div className="flex-1" whileTap={reduced ? undefined : { scale: .97 }} transition={spring}>
+        <motion.div className="flex-1" whileTap={reduced ? {} : { scale: .97 }} transition={spring}>
           <Button variant="outline" size="sm" className="w-full h-8 px-2" onClick={() => { inspect(tool.slug); toggleSave(tool.slug); }} aria-pressed={isSaved}>
             {isSaved ? <Check /> : <Bookmark />}{isSaved ? 'Saved to your stack' : 'Save to your stack'}
           </Button>
