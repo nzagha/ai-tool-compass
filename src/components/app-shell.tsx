@@ -8,7 +8,7 @@ import { tools } from '@/lib/catalog';
 
 type AppState = { saved:string[]; compare:string[]; stacks:Record<string,string[]>; toggleSave:(slug:string)=>void; toggleCompare:(slug:string)=>void; clearCompare:()=>void; addStack:(name:string)=>void; moveToStack:(slug:string,name:string)=>void; removeFromStack:(slug:string,name:string)=>void };
 // Keep one context instance across hot reloads so providers and consumers never drift apart.
-const contextStore = globalThis as typeof globalThis & { __aibeanAppContext?: React.Context<AppState | null> };
+const contextStore = globalThis as typeof globalThis & { __aibeanAppContext?: ReactContext<AppState | null> };
 const Context = contextStore.__aibeanAppContext ??= createContext<AppState | null>(null);
 export function useApp() { const value = useContext(Context); if (!value) throw new Error('App context unavailable'); return value; }
 const footerLinks = {'AI Tools':'/tools','AI Skills':'/skills','Rankings':'/rankings','Categories':'/categories','Use Cases':'/use-cases','Activity':'/community','Saved tools':'/saved','Compare tools':'/compare','Vendor overview':'/vendor','Submit a tool':'/submit','Claim a listing':'/claim'} as const;
