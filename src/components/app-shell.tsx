@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type Context as ReactContext, type ReactNode } from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { ArrowRight, Bookmark, Menu, Search, X, GitCompareArrows } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,9 @@ import { BrandLogo } from '@/components/brand-logo';
 import { tools } from '@/lib/catalog';
 
 type AppState = { saved:string[]; compare:string[]; stacks:Record<string,string[]>; toggleSave:(slug:string)=>void; toggleCompare:(slug:string)=>void; clearCompare:()=>void; addStack:(name:string)=>void; moveToStack:(slug:string,name:string)=>void; removeFromStack:(slug:string,name:string)=>void };
-const Context = createContext<AppState | null>(null);
+// Keep one context instance across hot reloads so providers and consumers never drift apart.
+const contextStore = globalThis as typeof globalThis & { __aibeanAppContext?: ReactContext<AppState | null> };
+const Context = contextStore.__aibeanAppContext ??= createContext<AppState | null>(null);
 export function useApp() { const value = useContext(Context); if (!value) throw new Error('App context unavailable'); return value; }
 const footerLinks = {'AI Tools':'/tools','AI Skills':'/skills','Rankings':'/rankings','Categories':'/categories','Use Cases':'/use-cases','Activity':'/community','Saved tools':'/saved','Compare tools':'/compare','Vendor overview':'/vendor','Submit a tool':'/submit','Claim a listing':'/claim'} as const;
 const nav = [{to:'/tools',label:'AI Tools'},{to:'/skills',label:'AI Skills'},{to:'/rankings',label:'Rankings'},{to:'/categories',label:'Categories'},{to:'/use-cases',label:'Use Cases'},{to:'/community',label:'Community'},{to:'/vendor',label:'For Vendors'}] as const;
