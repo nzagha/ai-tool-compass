@@ -40,4 +40,4 @@ export function AppShell({children}:{children:ReactNode}) {
  </div></Context.Provider>;
 }
 
-function AccountButton(){const {user,isAdmin}=useAuth();if(!user)return <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/login">Join the crew</Link></Button>;return <>{isAdmin&&<Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/admin">Admin</Link></Button>}<Button variant="ghost" size="sm" className="hidden sm:inline-flex" onClick={()=>void supabase.auth.signOut()}>Sign out</Button></>;}
+function AccountButton(){const {user,isAdmin}=useAuth();if(!user)return <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/login">Join the crew</Link></Button>;return <><Button asChild variant="outline" size="sm"><Link to="/account">My account</Link></Button>{isAdmin&&<Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/admin">Admin</Link></Button>}<Button variant="ghost" size="sm" className="hidden sm:inline-flex" onClick={()=>void supabase.auth.signOut()}>Sign out</Button></>;}

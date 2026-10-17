@@ -9,8 +9,9 @@ import { useAuth } from '@/components/auth-provider';
 import { adminSnapshot, saveAdminRecord, saveMemberRole } from '@/lib/admin.functions';
 import { sections, statuses, kinds, type AdminSection, type RecordKind, type RecordStatus } from '@/lib/admin-model';
 import { meta } from '@/lib/meta';
-import { tools, skills, categories, useCases, verticals, slugify, type Tool } from '@/lib/catalog';
+import { tools, skills, categories, useCases, verticals, slugify, type Tool, type AISkill } from '@/lib/catalog';
 import { ToolForm } from '@/components/admin-tool-form';
+import { SkillForm } from '@/components/admin-skill-form';
 
 export const Route = createFileRoute('/admin')({ ssr: false, head: () => meta('Admin control panel', 'Manage aiBean tools, claims, reviews and accounts.'), component: Admin });
 
@@ -44,7 +45,7 @@ function Section({ section, data, refresh }: { section: AdminSection; data: Snap
   if (section === 'users') return <Users data={data} refresh={refresh} />;
   if (section === 'audit') return <div><h1 className="text-3xl font-semibold">Audit history</h1><table className="w-full text-sm mt-6"><tbody>{data.audit.map(a => <tr key={a.id} className="border-b"><td className="py-2">{new Date(a.created_at).toLocaleString()}</td><td>{a.action}</td><td>{a.record_kind}</td><td>{a.record_title}</td></tr>)}</tbody></table>{!data.audit.length && <p className="text-muted-foreground mt-4">No changes yet.</p>}</div>;
   const kind: RecordKind = section === 'verification' || section === 'ranking' ? 'tool' : (kinds as readonly string[]).includes(section) ? section as RecordKind : 'editorial';
-  return <Records title={title ?? ''} section={section} kind={kind} records={data.records.filter(r => r.kind === kind)} refresh={refresh} />;
+  return <Records key={section} title={title ?? ''} section={section} kind={kind} records={data.records.filter(r => r.kind === kind)} refresh={refresh} />;
 }
 
 const placementTemplate = () => ({ label: 'Featured', toolSlug: '', startsAt: new Date().toISOString().slice(0, 10), endsAt: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10) });
@@ -56,11 +57,12 @@ function Records({ title, section, kind, records, refresh }: { title: string; se
   const save = useServerFn(saveAdminRecord);
   const [edit, setEdit] = useState<{ slug: string; title: string; status: RecordStatus; payload: string; owner_id: string | null } | null>(null);
   const [toolEdit, setToolEdit] = useState<{ tool?: Partial<Tool>; status: RecordStatus } | null>(null);
+  const [skillEdit, setSkillEdit] = useState<{ skill?: Partial<AISkill>; status: RecordStatus } | null>(null);
   const [err, setErr] = useState<string | null>(null); const [ok, setOk] = useState<string | null>(null);
   const rows = [...records, ...demoRows(kind).filter(d => !records.some(r => r.slug === d.slug))];
   async function put(r: { slug: string; title: string; status: RecordStatus; payload: unknown; owner_id: string | null }) {
     setErr(null); setOk(null);
-    try { await save({ data: { kind, slug: r.slug, title: r.title, status: r.status, payload: r.payload as Record<string, unknown>, owner_id: r.owner_id } }); setEdit(null); setToolEdit(null); setOk(`Saved “${r.title}”.`); refresh(); }
+    try { await save({ data: { kind, slug: r.slug, title: r.title, status: r.status, payload: r.payload as Record<string, unknown>, owner_id: r.owner_id } }); setEdit(null); setToolEdit(null); setSkillEdit(null); setOk(`Saved “${r.title}”.`); refresh(); }
     catch (e) { setErr(e instanceof Error ? e.message : String(e)); }
   }
   function submitEdit() { if (!edit) return; try { void put({ ...edit, payload: JSON.parse(edit.payload || '{}') }); } catch { setErr('Details must be valid JSON.'); } }
@@ -87,16 +89,18 @@ function Records({ title, section, kind, records, refresh }: { title: string; se
     if (kind === 'review') return `${String(x['rating'] ?? '—')}/5 · ${String(x['body'] ?? x['text'] ?? '').slice(0, 60)}`;
     if (kind === 'placement') return `${String(x['label'] ?? '')} · ${String(x['toolSlug'] ?? '')} · ${String(x['startsAt'] ?? '')} → ${String(x['endsAt'] ?? '')}`;
     if (kind === 'tool') return `${String(x['category'] ?? '')} · ${String(x['claim'] ?? '')}`;
+    if (kind === 'skill') return `${String(x['level'] ?? '—')} · ${String(x['category'] ?? '—')} · ${Array.isArray(x['outcomes']) ? x['outcomes'].length : 0} outcomes · ${Array.isArray(x['tools']) ? x['tools'].length : 0} tools`;
     return '';
   }
   function setRank(r: Rec, v: string) { const n = Number(v); if (n >= 1) void put({ ...base(r), payload: { ...p(r), rank: Math.round(n) } }); }
   const canAdd = !['verification', 'ranking', 'claim', 'review', 'submission', 'report'].includes(section);
-  return <div><div className="flex items-center justify-between gap-4"><h1 className="text-3xl font-semibold">{title}</h1>{canAdd && <Button onClick={() => kind === 'tool' ? setToolEdit({ status: 'draft' }) : setEdit({ slug: '', title: '', status: kind === 'placement' ? 'active' : 'draft', payload: JSON.stringify(kind === 'placement' ? placementTemplate() : {}, null, 2), owner_id: null })}>Add new</Button>}</div>
+  return <div><div className="flex items-center justify-between gap-4"><h1 className="text-3xl font-semibold">{title}</h1>{canAdd && <Button onClick={() => kind === 'tool' ? setToolEdit({ status: 'draft' }) : kind === 'skill' ? setSkillEdit({ status: 'draft' }) : setEdit({ slug: '', title: '', status: kind === 'placement' ? 'active' : 'draft', payload: JSON.stringify(kind === 'placement' ? placementTemplate() : {}, null, 2), owner_id: null })}>Add new</Button>}</div>
     {section === 'claim' && <p className="text-sm text-muted-foreground mt-2">Claims sent from the claim form appear here. Approving gives the vendor ownership.</p>}
     {err && <p className="text-destructive text-sm mt-4">{err}</p>}{ok && <p className="text-sm text-primary mt-4">{ok}</p>}
     {edit && <div className="border rounded-xl p-5 mt-6 space-y-3 bg-card"><label className="text-sm font-semibold block">Title<Input value={edit.title} onChange={e => setEdit({ ...edit, title: e.target.value, slug: edit.slug || slugify(e.target.value) })} className="mt-1" /></label><label className="text-sm font-semibold block">Web address name<Input placeholder="like-this" value={edit.slug} onChange={e => setEdit({ ...edit, slug: e.target.value })} className="mt-1" /></label><label className="text-sm font-semibold block">Status <select className="border rounded-md h-9 px-2 bg-background ml-2" value={edit.status} onChange={e => setEdit({ ...edit, status: e.target.value as RecordStatus })}>{statuses.map(s => <option key={s}>{s}</option>)}</select></label><label className="text-sm font-semibold block">Details<Textarea rows={12} className="font-mono text-xs mt-1" value={edit.payload} onChange={e => setEdit({ ...edit, payload: e.target.value })} /></label><div className="flex gap-2"><Button onClick={submitEdit}>Save</Button><Button variant="ghost" onClick={() => setEdit(null)}>Cancel</Button></div></div>}
     {toolEdit && <ToolForm key={toolEdit.tool?.slug ?? 'new'} initial={toolEdit.tool} status={toolEdit.status} onCancel={() => setToolEdit(null)} onSave={(t, st) => { if (!t.name || !t.slug || !t.category) { setErr('Add a name, web address name and category.'); return; } void put({ slug: t.slug, title: t.name, status: st, payload: t, owner_id: null }); }} />}
-    <table className="w-full text-sm mt-6"><thead><tr className="text-left text-muted-foreground border-b"><th className="py-2">Title</th><th>Details</th><th>Status</th><th></th></tr></thead><tbody>{rows.map(r => <tr key={r.id} className="border-b align-middle"><td className="py-2 font-medium">{r.title}{r.id.startsWith('demo-') && <span className="ml-2 text-xs text-muted-foreground">(sample)</span>}</td><td className="text-muted-foreground">{section === 'ranking' ? <span className="flex items-center gap-2">#<Input type="number" min={1} defaultValue={Number(p(r)['rank'] ?? 1)} className="h-8 w-20" onBlur={e => { if (Number(e.target.value) !== Number(p(r)['rank'])) setRank(r, e.target.value); }} /></span> : info(r)}</td><td><select aria-label="Status" className="border rounded-md h-8 px-2 bg-background" value={r.status} onChange={e => void put({ ...base(r), status: e.target.value as RecordStatus, payload: p(r) })}>{statuses.map(s => <option key={s}>{s}</option>)}</select></td><td className="text-right whitespace-nowrap space-x-1">{actions(r).map(([l, f]) => <Button key={l} size="sm" variant="outline" onClick={f}>{l}</Button>)}<Button size="sm" variant="ghost" onClick={() => kind === 'tool' ? (setToolEdit({ tool: p(r) as Partial<Tool>, status: r.status as RecordStatus }), window.scrollTo({ top: 0 })) : setEdit({ ...base(r), payload: JSON.stringify(r.payload, null, 2) })}>Edit</Button></td></tr>)}</tbody></table>
+    {skillEdit && <SkillForm key={skillEdit.skill?.slug ?? 'new'} initial={skillEdit.skill} status={skillEdit.status} onCancel={() => setSkillEdit(null)} onSave={(skill, st) => put({ slug: skill.slug, title: skill.name, status: st, payload: skill, owner_id: null })} />}
+    <table className="w-full text-sm mt-6"><thead><tr className="text-left text-muted-foreground border-b"><th className="py-2">Title</th><th>Details</th><th>Status</th><th></th></tr></thead><tbody>{rows.map(r => <tr key={r.id} className="border-b align-middle"><td className="py-2 font-medium">{r.title}{r.id.startsWith('demo-') && <span className="ml-2 text-xs text-muted-foreground">(sample)</span>}</td><td className="text-muted-foreground">{section === 'ranking' ? <span className="flex items-center gap-2">#<Input type="number" min={1} defaultValue={Number(p(r)['rank'] ?? 1)} className="h-8 w-20" onBlur={e => { if (Number(e.target.value) !== Number(p(r)['rank'])) setRank(r, e.target.value); }} /></span> : info(r)}</td><td><select aria-label="Status" className="border rounded-md h-8 px-2 bg-background" value={r.status} onChange={e => void put({ ...base(r), status: e.target.value as RecordStatus, payload: p(r) })}>{statuses.map(s => <option key={s}>{s}</option>)}</select></td><td className="text-right whitespace-nowrap space-x-1">{actions(r).map(([l, f]) => <Button key={l} size="sm" variant="outline" onClick={f}>{l}</Button>)}<Button size="sm" variant="ghost" onClick={() => kind === 'tool' ? (setToolEdit({ tool: p(r) as Partial<Tool>, status: r.status as RecordStatus }), window.scrollTo({ top: 0 })) : kind === 'skill' ? (setSkillEdit({ skill: { ...skills.find(s => s.slug === r.slug), ...p(r), slug: r.slug, name: r.title } as Partial<AISkill>, status: r.status as RecordStatus }), window.scrollTo({ top: 0 })) : setEdit({ ...base(r), payload: JSON.stringify(r.payload, null, 2) })}>Edit</Button></td></tr>)}</tbody></table>
     {!rows.length && <p className="text-muted-foreground mt-4">Nothing here yet.</p>}</div>;
 }
 

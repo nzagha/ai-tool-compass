@@ -6,6 +6,15 @@ export const statuses = ['draft','pending','published','approved','rejected','ar
 export type RecordStatus = typeof statuses[number];
 export type AdminRecord = { id?: string; kind: RecordKind; slug: string; title: string; status: RecordStatus; payload: Record<string, unknown>; owner_id?: string | null; updated_at?: string; source?: 'demo' | 'saved' };
 export const verificationStates = ['Unverified','Auto-Checked','Human Reviewed','Vendor Confirmed','Needs Reverification'] as const;
+export const skillFields = z.object({
+  slug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'Use a valid web address name.'),
+  name: z.string().trim().min(1, 'Add a skill name.'),
+  description: z.string().trim().min(1, 'Add a description.'),
+  level: z.enum(['Beginner', 'Intermediate', 'Advanced']),
+  category: z.string().trim().min(1, 'Choose a category.'),
+  tools: z.array(z.string().min(1)),
+  outcomes: z.array(z.string().trim().min(1)),
+});
 const url = z.string().max(2000).refine(v => !v || /^https?:\/\//i.test(v), 'Use an http or https URL');
 const score = z.number().min(0).max(100);
 export const toolFields = z.object({
