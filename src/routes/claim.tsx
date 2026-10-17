@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PageIntro } from '@/components/catalog-ui';
 import { tools } from '@/lib/catalog';
+import { useCatalog } from '@/components/catalog-provider';
 import { meta } from '@/lib/meta';
 
 export const Route = createFileRoute('/claim')({
@@ -15,7 +16,7 @@ export const Route = createFileRoute('/claim')({
 
 const steps = ['Pick your tool', 'Your details', 'Proof of ownership', 'Review & submit'];
 
-function Claim() {
+function Claim(){const {tools}=useCatalog();
   const { tool: initial } = Route.useSearch();
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
