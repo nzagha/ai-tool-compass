@@ -47,6 +47,33 @@ export type Database = {
         }
         Relationships: []
       }
+      catalog_public: {
+        Row: {
+          enabled: boolean
+          id: string
+          kind: string
+          payload: Json
+          slug: string
+          title: string
+        }
+        Insert: {
+          enabled?: boolean
+          id: string
+          kind: string
+          payload?: Json
+          slug: string
+          title: string
+        }
+        Update: {
+          enabled?: boolean
+          id?: string
+          kind?: string
+          payload?: Json
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
       directory_records: {
         Row: {
           created_at: string
