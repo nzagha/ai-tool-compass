@@ -40,7 +40,7 @@ export function HeroPreview() {
           YOUR NEXT STACK
         </span>
       </div>
-      <h2 className="font-display text-2xl font-bold leading-tight mt-3">Less scrolling.<br/><span className="text-highlight">More shipping.</span></h2>
+      <h2 className="font-display text-2xl font-bold leading-tight mt-3">Less scrolling.<br/><span className="text-highlight">More building.</span></h2>
       <div className="grid grid-cols-3 gap-1 mt-4" role="group" aria-label="Preview tools">
         {picks.map(pick => <motion.div key={pick.slug} whileHover={reduced ? {} : { y: -2 }} whileTap={reduced ? {} : { scale: .97 }} transition={spring}>
           <Button variant={value.selected === pick.slug ? 'default' : 'ghost'} className="w-full px-1 h-8 text-[11px] gap-1" aria-pressed={value.selected === pick.slug} onClick={() => inspect(pick.slug)}>
