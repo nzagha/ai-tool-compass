@@ -21,11 +21,11 @@ export const toolFields = z.object({
 export const recordInput = z.object({kind:z.enum(kinds),slug:z.string().regex(/^[a-z0-9][a-z0-9-]*$/).max(150),title:z.string().min(1).max(200),status:z.enum(statuses),payload:z.record(z.unknown()),owner_id:z.string().uuid().nullable().optional()}).superRefine((v,c)=>{
   if(v.kind==='tool'){const result=toolFields.safeParse(v.payload);if(!result.success)c.addIssue({code:'custom',message:result.error.issues.map(i=>`${i.path.join('.')}: ${i.message}`).join('; ')});}
   if(v.kind==='placement'){
-    if(!['Featured','Sponsored'].includes(String(v.payload.label)))c.addIssue({code:'custom',message:'Every placement must be labeled Featured or Sponsored'});
-    const start=Date.parse(String(v.payload.startsAt)),end=Date.parse(String(v.payload.endsAt));
+    if(!['Featured','Sponsored'].includes(String(v.payload['label'])))c.addIssue({code:'custom',message:'Every placement must be labeled Featured or Sponsored'});
+    const start=Date.parse(String(v.payload['startsAt'])),end=Date.parse(String(v.payload['endsAt']));
     if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start)c.addIssue({code:'custom',message:'Placement end must follow its start'});
   }
-  if(v.kind==='review'&&!(Number(v.payload.rating)>=1&&Number(v.payload.rating)<=5))c.addIssue({code:'custom',message:'Review rating must be 1–5'});
+  if(v.kind==='review'&&!(Number(v.payload['rating'])>=1&&Number(v.payload['rating'])<=5))c.addIssue({code:'custom',message:'Review rating must be 1–5'});
   if(v.kind==='claim'&&v.status==='approved'&&!v.owner_id)c.addIssue({code:'custom',message:'An approved claim must belong to a signed-in vendor'});
 });
 export function canAdmin(role: string | undefined) { return role === 'admin'; }
