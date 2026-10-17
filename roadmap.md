@@ -4,9 +4,9 @@
 - [x] Verify routes and responsive preview; document demo-only limits.
 - [x] Apply and verify the official aiBean logo, typography, palette, components, and voice across all screens.
 - [x] Add and verify an in-place interactive hero preview with remembered exploration and spring feedback.
-- [ ] Add Cloud accounts, basic profiles, and secure admin-only access.
-- [ ] Build persisted admin management for tools, skills, taxonomy, claims, submissions, reviews, rankings, vendors, placements, settings, and audit history.
-- [ ] Connect published catalog changes and incoming vendor requests; verify admin access and editing flows.
+- [x] Add Cloud accounts, basic profiles, and secure admin-only access.
+- [x] Build persisted admin management for tools, skills, taxonomy, claims, submissions, reviews, rankings, vendors, placements, settings, and audit history.
+- [x] Connect published catalog changes and incoming vendor requests; verify admin access and editing flows.
 - [x] Admin panel: working screens/actions for tools, skills, verification, claims, reviews, rankings, placements
 - [x] Align admin AI Skills fields and verify a saved skill on the public skills page.
-- [ ] Build and verify a signed-in user control panel aligned with account, discovery, and contribution capabilities.
+- [x] Build and verify a signed-in user control panel aligned with account, discovery, and contribution capabilities.
