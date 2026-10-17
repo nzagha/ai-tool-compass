@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { DemoLabel, PageIntro } from '@/components/catalog-ui';
 import { skills, tools } from '@/lib/catalog';
+import { useCatalog } from '@/components/catalog-provider';
 import { meta } from '@/lib/meta';
 
 export const Route = createFileRoute('/skills')({
@@ -12,7 +13,7 @@ export const Route = createFileRoute('/skills')({
 
 const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'] as const;
 
-function Skills() {
+function Skills(){const {skills,tools}=useCatalog();
   const [level, setLevel] = useState<(typeof levels)[number]>('All');
   const list = skills.filter((s) => level === 'All' || s.level === level);
   return (
