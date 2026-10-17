@@ -15,3 +15,5 @@
 - Keep hero exploration in a focused preview component with a validated, hydration-safe local storage hook; use shared discovery context for actual saves so the preview and saved-tools page stay in sync.
 - Public pages read tools/categories/use cases/skills through useCatalog() (sample data merged with admin-published records) so admin edits show site-wide.
 - Edit AI skills through a typed form matching AISkill, using live catalog categories and tool slugs; this keeps admin records compatible with public skill cards and filters.
+- Keep the user control panel under the client-gated `_authenticated` layout; authenticated account functions scope profile and contribution operations to context.userId so members cannot access each other's records.
+- Reuse shared discovery state for the account workspace and explicitly distinguish browser-local saves from persisted profile and contribution records; this preserves existing collections without implying cross-device sync.
