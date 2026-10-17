@@ -14,3 +14,4 @@
 - Keep official brand assets behind `src/components/brand-logo.tsx` and semantic global tokens so the identity stays consistent across routes.
 - Keep hero exploration in a focused preview component with a validated, hydration-safe local storage hook; use shared discovery context for actual saves so the preview and saved-tools page stay in sync.
 - Public pages read tools/categories/use cases/skills through useCatalog() (sample data merged with admin-published records) so admin edits show site-wide.
+- Edit AI skills through a typed form matching AISkill, using live catalog categories and tool slugs; this keeps admin records compatible with public skill cards and filters.

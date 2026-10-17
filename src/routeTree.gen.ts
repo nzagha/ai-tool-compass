@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ClaimRouteImport } from './routes/claim'
@@ -23,6 +24,7 @@ import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as UseCasesRouteImport } from './routes/use-cases'
 import { Route as VendorRouteImport } from './routes/vendor'
+import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated.account'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
@@ -31,6 +33,10 @@ import { Route as UseCasesSlugRouteImport } from './routes/use-cases.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -98,6 +104,11 @@ const VendorRoute = VendorRouteImport.update({
   path: '/vendor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -134,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
   '/vendor': typeof VendorRoute
+  '/account': typeof AuthenticatedAccountRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
@@ -153,6 +165,7 @@ export interface FileRoutesByTo {
   '/submit': typeof SubmitRoute
   '/use-cases': typeof UseCasesRouteWithChildren
   '/vendor': typeof VendorRoute
+  '/account': typeof AuthenticatedAccountRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
@@ -161,6 +174,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/admin': typeof AdminRoute
   '/categories': typeof CategoriesRouteWithChildren
   '/claim': typeof ClaimRoute
@@ -174,6 +188,7 @@ export interface FileRoutesById {
   '/tools': typeof ToolsRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
   '/vendor': typeof VendorRoute
+  '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
@@ -196,6 +211,7 @@ export interface FileRouteTypes {
     | '/tools'
     | '/use-cases'
     | '/vendor'
+    | '/account'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
@@ -215,6 +231,7 @@ export interface FileRouteTypes {
     | '/submit'
     | '/use-cases'
     | '/vendor'
+    | '/account'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
@@ -222,6 +239,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/admin'
     | '/categories'
     | '/claim'
@@ -235,6 +253,7 @@ export interface FileRouteTypes {
     | '/tools'
     | '/use-cases'
     | '/vendor'
+    | '/_authenticated/account'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
@@ -243,6 +262,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AdminRoute: typeof AdminRoute
   CategoriesRoute: typeof CategoriesRouteWithChildren
   ClaimRoute: typeof ClaimRoute
@@ -265,6 +285,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -358,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VendorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/categories/$slug': {
       id: '/categories/$slug'
       path: '/$slug'
@@ -388,6 +422,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
 
 interface CategoriesRouteChildren {
   CategoriesSlugRoute: typeof CategoriesSlugRoute
@@ -427,6 +473,7 @@ const UseCasesRouteWithChildren = UseCasesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AdminRoute: AdminRoute,
   CategoriesRoute: CategoriesRouteWithChildren,
   ClaimRoute: ClaimRoute,

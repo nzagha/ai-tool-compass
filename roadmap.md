@@ -8,3 +8,5 @@
 - [ ] Build persisted admin management for tools, skills, taxonomy, claims, submissions, reviews, rankings, vendors, placements, settings, and audit history.
 - [ ] Connect published catalog changes and incoming vendor requests; verify admin access and editing flows.
 - [x] Admin panel: working screens/actions for tools, skills, verification, claims, reviews, rankings, placements
+- [x] Align admin AI Skills fields and verify a saved skill on the public skills page.
+- [ ] Build and verify a signed-in user control panel aligned with account, discovery, and contribution capabilities.
