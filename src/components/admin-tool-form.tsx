@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useCatalog } from '@/components/catalog-provider';
+import { ImageUpload } from '@/components/image-upload';
 import { slugify, type Tool } from '@/lib/catalog';
 import { verificationStates, statuses, type RecordStatus } from '@/lib/admin-model';
 
@@ -33,6 +34,10 @@ export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: {
       <L label="Launched (year)"><Input type="number" className="mt-1" value={t.launched} onChange={e => set('launched', Number(e.target.value))} /></L>
       <L label="Listing status"><select className={sel} value={status} onChange={e => setStatus(e.target.value as RecordStatus)}>{statuses.map(s => <option key={s}>{s}</option>)}</select></L>
       <div className="sm:col-span-2"><L label="Description"><Textarea className="mt-1" rows={3} value={t.description} onChange={e => set('description', e.target.value)} /></L></div>
+    </Box>
+    <Box title="Logo & product preview">
+      <ImageUpload label="Logo (square image works best; replaces the logo letter)" folder="logos" value={t.logoUrl ? [t.logoUrl] : []} onChange={urls => set('logoUrl', urls[0] ?? '')} />
+      <ImageUpload label="Product preview images (up to 8)" folder="screenshots" multiple value={t.screenshots ?? []} onChange={urls => set('screenshots', urls)} />
     </Box>
     <Box title="Category & fit">
       <L label="Category"><select className={sel} value={t.category} onChange={e => setT(p => ({ ...p, category: e.target.value, subcategory: '' }))}><option value="">Choose…</option>{categories.map(c => <option key={c.slug}>{c.name}</option>)}</select></L>
