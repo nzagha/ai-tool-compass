@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Bookmark, Check, CheckCircle2, Clo
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/components/app-shell';
 import { DemoLabel, Score, ToolLogo, ToolRow, VerificationBadge } from '@/components/catalog-ui';
-import { getTool, reviews, tools } from '@/lib/catalog';
+import { reviews, tools } from '@/lib/catalog';
 import { useCatalog, loadCatalog } from '@/components/catalog-provider';
 import { meta } from '@/lib/meta';
 export const Route=createFileRoute('/tools/$slug')({loader:async({params,context})=>{const tool=(await loadCatalog(context.queryClient)).tools.find(t=>t.slug===params.slug);if(!tool)throw notFound();return tool},head:({loaderData})=>meta(loaderData?.name||'Tool not found',loaderData?.tagline||'Browse AI tools on aiBean.'),component:Detail});
