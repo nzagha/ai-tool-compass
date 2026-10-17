@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,6 +11,9 @@ const scoreKeys = ['total', 'capability', 'satisfaction', 'value', 'ease', 'reli
 const scoreLabels: Record<string, string> = { total: 'Overall', businessFit: 'Business fit' };
 const listKeys = [['features', 'Features'], ['pros', 'Pros'], ['cons', 'Cons'], ['limitations', 'Limitations'], ['integrations', 'Integrations'], ['platform', 'Platforms']] as const;
 
+const L = ({ label, children }: { label: string; children: ReactNode }) => <label className="text-sm font-semibold block">{label}{children}</label>;
+const Box = ({ title, children }: { title: string; children: ReactNode }) => <fieldset className="border rounded-xl p-4"><legend className="text-xs font-bold uppercase text-muted-foreground px-1">{title}</legend><div className="grid sm:grid-cols-2 gap-3">{children}</div></fieldset>;
+
 export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: { initial?: Partial<Tool>; status: RecordStatus; onSave: (t: Tool, status: RecordStatus) => void; onCancel: () => void }) {
   const { categories, useCases, verticals } = useCatalog();
   const [t, setT] = useState<Tool>({ ...blank, ...initial, rating: { ...blank.rating, ...initial?.rating }, score: { ...blank.score, ...initial?.score } } as Tool);
@@ -18,9 +21,7 @@ export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: {
   const set = <K extends keyof Tool>(k: K, v: Tool[K]) => setT(p => ({ ...p, [k]: v }));
   const subs = categories.find(c => c.name === t.category)?.subcategories ?? [];
   const sel = 'border border-input rounded-md h-9 px-2 bg-background w-full mt-1 text-sm font-normal';
-  const L = ({ label, children }: { label: string; children: React.ReactNode }) => <label className="text-sm font-semibold block">{label}{children}</label>;
   const toggle = (k: 'useCases' | 'verticals', v: string) => set(k, t[k].includes(v) ? t[k].filter(x => x !== v) : [...t[k], v]);
-  const Box = ({ title, children }: { title: string; children: React.ReactNode }) => <fieldset className="border rounded-xl p-4"><legend className="text-xs font-bold uppercase text-muted-foreground px-1">{title}</legend><div className="grid sm:grid-cols-2 gap-3">{children}</div></fieldset>;
   return <div className="border rounded-xl p-5 mt-6 space-y-5 bg-card">
     <Box title="Basics">
       <L label="Name"><Input className="mt-1" value={t.name} onChange={e => setT(p => ({ ...p, name: e.target.value, slug: initial?.slug || slugify(e.target.value), monogram: p.monogram || e.target.value.slice(0, 1) }))} /></L>
