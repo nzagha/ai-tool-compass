@@ -7,3 +7,4 @@
 - [ ] Add Cloud accounts, basic profiles, and secure admin-only access.
 - [ ] Build persisted admin management for tools, skills, taxonomy, claims, submissions, reviews, rankings, vendors, placements, settings, and audit history.
 - [ ] Connect published catalog changes and incoming vendor requests; verify admin access and editing flows.
+- [ ] Admin panel: working screens/actions for tools, skills, verification, claims, reviews, rankings, placements
