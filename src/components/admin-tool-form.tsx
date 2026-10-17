@@ -14,7 +14,7 @@ const listKeys = [['features', 'Features'], ['pros', 'Pros'], ['cons', 'Cons'], 
 const L = ({ label, children }: { label: string; children: ReactNode }) => <label className="text-sm font-semibold block">{label}{children}</label>;
 const Box = ({ title, children }: { title: string; children: ReactNode }) => <fieldset className="border rounded-xl p-4"><legend className="text-xs font-bold uppercase text-muted-foreground px-1">{title}</legend><div className="grid sm:grid-cols-2 gap-3">{children}</div></fieldset>;
 
-export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: { initial?: Partial<Tool>; status: RecordStatus; onSave: (t: Tool, status: RecordStatus) => void; onCancel: () => void }) {
+export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: { initial?: Partial<Tool> | undefined; status: RecordStatus; onSave: (t: Tool, status: RecordStatus) => void; onCancel: () => void }) {
   const { categories, useCases, verticals } = useCatalog();
   const [t, setT] = useState<Tool>({ ...blank, ...initial, rating: { ...blank.rating, ...initial?.rating }, score: { ...blank.score, ...initial?.score } } as Tool);
   const [status, setStatus] = useState<RecordStatus>(initialStatus);
