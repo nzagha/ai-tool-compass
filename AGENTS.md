@@ -13,3 +13,4 @@
 - Keep shared discovery state in a client-side context in `src/components/app-shell.tsx` because the current MVP has no connected backend.
 - Keep official brand assets behind `src/components/brand-logo.tsx` and semantic global tokens so the identity stays consistent across routes.
 - Keep hero exploration in a focused preview component with a validated, hydration-safe local storage hook; use shared discovery context for actual saves so the preview and saved-tools page stay in sync.
+- Public pages read tools/categories/use cases/skills through useCatalog() (sample data merged with admin-published records) so admin edits show site-wide.
