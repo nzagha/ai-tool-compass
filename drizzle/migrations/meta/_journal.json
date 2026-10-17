@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1792268526947,
+      "tag": "0000_aibean_admin_control",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792268580416,
+      "tag": "0001_public_catalog_snapshot",
+      "breakpoints": true
+    }
+  ]
+}
