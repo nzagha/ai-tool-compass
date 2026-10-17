@@ -16,7 +16,7 @@ export const toolFields = z.object({
   rating: z.object({ average: z.number().min(0).max(5), count: z.number().int().min(0), distribution: z.array(z.number().int().min(0)).length(5) }),
   score: z.object({total:score,capability:score,satisfaction:score,value:score,ease:score,reliability:score,businessFit:score,confidence:score}),
   rank:z.number().int().min(1),trending:score,platform:z.array(z.string()),api:z.boolean(),features:z.array(z.string()),pros:z.array(z.string()),cons:z.array(z.string()),integrations:z.array(z.string()),website:url,
-  updated:z.string(),verified:z.string(),verifiedBy:z.string(),limitations:z.array(z.string()),launched:z.number().int().min(1900).max(2200),
+  updated:z.string(),verified:z.string(),verifiedBy:z.string(),limitations:z.array(z.string()),launched:z.number().int().min(1900).max(2200),logoUrl:z.string().max(2000).optional(),screenshots:z.array(z.string().max(2000)).max(12).optional(),
 });
 export const recordInput = z.object({kind:z.enum(kinds),slug:z.string().regex(/^[a-z0-9][a-z0-9-]*$/).max(150),title:z.string().min(1).max(200),status:z.enum(statuses),payload:z.record(z.unknown()),owner_id:z.string().uuid().nullable().optional()}).superRefine((v,c)=>{
   if(v.kind==='tool'){const result=toolFields.safeParse(v.payload);if(!result.success)c.addIssue({code:'custom',message:result.error.issues.map(i=>`${i.path.join('.')}: ${i.message}`).join('; ')});}
