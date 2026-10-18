@@ -7,6 +7,9 @@ import { PageIntro } from '@/components/catalog-ui';
 import { tools } from '@/lib/catalog';
 import { useCatalog } from '@/components/catalog-provider';
 import { meta } from '@/lib/meta';
+import { useAuth } from '@/components/auth-provider';
+import { EvidenceUpload, type EvidenceFile } from '@/components/evidence-upload';
+import { createContribution } from '@/lib/account.functions';
 
 export const Route = createFileRoute('/claim')({
   validateSearch: (s: Record<string, unknown>) => ({ tool: typeof s['tool'] === 'string' ? s['tool'] : '' }),
@@ -21,10 +24,23 @@ function Claim(){const {tools}=useCatalog();
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const [f, setF] = useState({ tool: initial, name: '', role: '', email: '', method: 'Domain email', evidence: '' });
+  const { user } = useAuth();
+  const [files, setFiles] = useState<EvidenceFile[]>([]);
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState('');
+  const submit = async () => {
+    if (!user) { setDone(true); return; }
+    setSending(true); setErr('');
+    try {
+      await createContribution({ data: { kind: 'claim', title: `Claim ${tool?.name ?? f.tool}`, payload: { toolSlug: f.tool, name: f.name, role: f.role, email: f.email, method: f.method, evidence: f.evidence || 'See attached files', attachments: files } } });
+      setDone(true);
+    } catch (e) { setErr(e instanceof Error ? e.message : 'Could not send your claim.'); }
+    finally { setSending(false); }
+  };
   const set = (k: keyof typeof f, v: string) => setF({ ...f, [k]: v });
   const tool = tools.find((t) => t.slug === f.tool);
   const domain = tool ? new URL(tool.website).hostname.replace('www.', '') : '';
-  const valid = [!!tool && tool.claim !== 'Claimed', !!f.name && !!f.role && /.+@.+\..+/.test(f.email), !!f.evidence, true][step];
+  const valid = [!!tool && tool.claim !== 'Claimed', !!f.name && !!f.role && /.+@.+\..+/.test(f.email), !!f.evidence || files.length > 0, true][step];
 
   if (done) return (
     <div className="max-w-xl mx-auto px-5 pt-20 text-center">
@@ -58,14 +74,16 @@ function Claim(){const {tools}=useCatalog();
           <p className="text-sm font-semibold">How can we confirm you own {tool?.name}?</p>
           {['Domain email', 'DNS TXT record', 'Meta tag on website'].map((m) => <label key={m} className="flex gap-2 text-sm"><input type="radio" checked={f.method === m} onChange={() => set('method', m)} />{m}</label>)}
           <textarea value={f.evidence} onChange={(e) => set('evidence', e.target.value)} placeholder="Add a link or note our admin can check, e.g. company page listing you" className="w-full min-h-28 border border-border rounded-md p-3 text-sm bg-card" />
+          {user ? <EvidenceUpload userId={user.id} value={files} onChange={setFiles} /> : <p className="text-sm text-muted-foreground"><Link to="/login" className="underline">Sign in</Link> to attach documents or images (up to 5 files).</p>}
         </>}
-        {step === 3 && <dl className="text-sm">{[['Tool', tool?.name], ['Name', f.name], ['Role', f.role], ['Email', f.email], ['Verification', f.method], ['Evidence', f.evidence]].map(([k, v]) => <div key={k} className="flex justify-between gap-4 border-t py-3"><dt className="text-muted-foreground">{k}</dt><dd className="text-right">{v}</dd></div>)}</dl>}
+        {step === 3 && <dl className="text-sm">{[['Tool', tool?.name], ['Name', f.name], ['Role', f.role], ['Email', f.email], ['Verification', f.method], ['Evidence', f.evidence], ['Attachments', files.length ? files.map(x => x.name).join(', ') : 'None']].map(([k, v]) => <div key={k} className="flex justify-between gap-4 border-t py-3"><dt className="text-muted-foreground">{k}</dt><dd className="text-right">{v}</dd></div>)}</dl>}
       </div>
       <div className="flex justify-between mt-6">
         <Button variant="ghost" disabled={step === 0} onClick={() => setStep(step - 1)}><ArrowLeft />Back</Button>
-        {step < 3 ? <Button disabled={!valid} onClick={() => setStep(step + 1)}>Continue <ArrowRight /></Button> : <Button onClick={() => setDone(true)}>Submit claim</Button>}
+        {step < 3 ? <Button disabled={!valid} onClick={() => setStep(step + 1)}>Continue <ArrowRight /></Button> : <Button disabled={sending} onClick={() => void submit()}>{sending ? 'Sending…' : 'Submit claim'}</Button>}
       </div>
-      <p className="text-xs text-muted-foreground mt-6">Demo flow: claims are not stored yet.</p>
+      {err && <p className="text-sm text-destructive mt-4">{err}</p>}
+      {!user && <p className="text-xs text-muted-foreground mt-6">Sign in so your claim and files are saved to your account for admin review.</p>}
     </div>
   );
 }
