@@ -25,7 +25,7 @@ const groups: ComparisonGroup[] = [
     ['Pricing model', t => t.pricing],
     ['Starting price', t => getToolPricing(t).startingPrice],
     ['Free plan', t => getToolPricing(t).freePlan ? 'Yes' : 'No'],
-    ['Price details', t => t.priceDetail || 'Not listed'],
+    ['Enterprise Price details', t => t.priceDetail || 'Not listed'],
   ] },
   { title: 'Use cases & industries', rows: [
     ['Use cases', t => list(t.useCases)],
