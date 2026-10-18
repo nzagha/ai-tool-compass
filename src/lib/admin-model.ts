@@ -5,7 +5,7 @@ export type RecordKind = typeof kinds[number];
 export const statuses = ['draft','pending','published','approved','rejected','archived','active','paused','flagged'] as const;
 export type RecordStatus = typeof statuses[number];
 export type AdminRecord = { id?: string; kind: RecordKind; slug: string; title: string; status: RecordStatus; payload: Record<string, unknown>; owner_id?: string | null; updated_at?: string; source?: 'demo' | 'saved' };
-export const verificationStates = ['Unverified','Auto-Checked','Human Reviewed','Vendor Confirmed','Needs Reverification'] as const;
+export const verificationStates = ['Unverified','Auto-Checked','Human Reviewed','Vendor Confirmed','aiBean Verified','Needs Reverification'] as const;
 export const skillFields = z.object({
   slug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'Use a valid web address name.'),
   name: z.string().trim().min(1, 'Add a skill name.'),
