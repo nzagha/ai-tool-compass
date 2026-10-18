@@ -18,7 +18,7 @@ export function EvidenceUpload({ userId, value, onChange }: { userId: string; va
         if (file.size > 10 * 1024 * 1024) throw new Error(`${file.name} is over 10 MB`);
         const ext = file.name.split('.').pop()?.toLowerCase() || 'bin';
         const path = `${userId}/${crypto.randomUUID()}.${ext}`;
-        const { error: e } = await supabase.storage.from('claim-evidence').upload(path, file, { contentType: file.type || undefined });
+        const { error: e } = await supabase.storage.from('claim-evidence').upload(path, file, { contentType: file.type || 'application/octet-stream' });
         if (e) throw e;
         return { name: file.name, path, size: file.size };
       }));
