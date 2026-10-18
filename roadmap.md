@@ -11,3 +11,4 @@
 - [x] Align admin AI Skills fields and verify a saved skill on the public skills page.
 - [x] Build and verify a signed-in user control panel aligned with account, discovery, and contribution capabilities.
 - [x] Add organized tool overview, pricing and fit parameters to admin editing, tool details and comparison; verify persistence and display.
+- [ ] Repair claim submission, pending/approved status propagation and verify the complete ownership flow.
