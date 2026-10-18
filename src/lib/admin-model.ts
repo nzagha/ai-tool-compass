@@ -20,7 +20,7 @@ const score = z.number().min(0).max(100);
 export const toolFields = z.object({
   slug: z.string(), name: z.string().min(1), monogram: z.string().min(1), logoColor: z.string(), tagline: z.string().min(1), description: z.string(),
   category: z.string().min(1), subcategory: z.string(), useCases: z.array(z.string()), verticals: z.array(z.string()),
-  pricing: z.enum(['Free','Freemium','Paid','Enterprise']), priceDetail: z.string(), verification: z.enum(verificationStates),
+  pricing: z.enum(['Free','Freemium','Paid','Enterprise']), priceDetail: z.string(), startingPrice: z.string().max(200).optional(), freePlan: z.boolean().optional(), verification: z.enum(verificationStates),
   claim: z.enum(['Unclaimed','Claim Pending','Claimed','Claim Disputed']),
   rating: z.object({ average: z.number().min(0).max(5), count: z.number().int().min(0), distribution: z.array(z.number().int().min(0)).length(5) }),
   score: z.object({total:score,capability:score,satisfaction:score,value:score,ease:score,reliability:score,businessFit:score,confidence:score}),

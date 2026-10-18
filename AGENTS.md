@@ -17,3 +17,4 @@
 - Edit AI skills through a typed form matching AISkill, using live catalog categories and tool slugs; this keeps admin records compatible with public skill cards and filters.
 - Keep the user control panel under the client-gated `_authenticated` layout; authenticated account functions scope profile and contribution operations to context.userId so members cannot access each other's records.
 - Reuse shared discovery state for the account workspace and explicitly distinguish browser-local saves from persisted profile and contribution records; this preserves existing collections without implying cross-device sync.
+- Keep starting price and free-plan availability in tool payloads with a shared legacy pricing fallback; admin edits, details and comparisons must agree without requiring a schema migration.

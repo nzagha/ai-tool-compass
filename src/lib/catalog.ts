@@ -12,7 +12,14 @@ export interface Vendor { id: string; name: string; website: string; claimedTool
 export interface SavedStack { id: string; name: string; description: string; toolSlugs: string[] }
 export interface Submission { id: string; name: string; website: string; status: 'draft' | 'submitted' | 'in review'; createdAt: string }
 export interface SponsoredPlacement { id: string; toolSlug: string; label: 'Sponsored' | 'Featured'; location: string; startsAt: string; endsAt: string }
-export interface Tool { slug: string; name: string; monogram: string; logoColor: string; tagline: string; description: string; category: string; subcategory: string; useCases: string[]; verticals: string[]; pricing: PricingModel; priceDetail: string; verification: VerificationStatus; claim: ClaimStatus; rating: RatingSummary; score: RankingScore; rank: number; trending: number; platform: string[]; api: boolean; features: string[]; pros: string[]; cons: string[]; integrations: string[]; website: string; updated: string; verified: string; verifiedBy: string; limitations: string[]; launched: number; logoUrl?: string; screenshots?: string[] }
+export interface Tool { slug: string; name: string; monogram: string; logoColor: string; tagline: string; description: string; category: string; subcategory: string; useCases: string[]; verticals: string[]; pricing: PricingModel; priceDetail: string; startingPrice?: string; freePlan?: boolean; verification: VerificationStatus; claim: ClaimStatus; rating: RatingSummary; score: RankingScore; rank: number; trending: number; platform: string[]; api: boolean; features: string[]; pros: string[]; cons: string[]; integrations: string[]; website: string; updated: string; verified: string; verifiedBy: string; limitations: string[]; launched: number; logoUrl?: string; screenshots?: string[] }
+export function getToolPricing(tool: Pick<Tool, 'pricing' | 'priceDetail' | 'startingPrice' | 'freePlan'>) {
+  const legacyPrice = tool.priceDetail.match(/\$[\d,.]+(?:\s*\/\s*\w+)?/)?.[0];
+  return {
+    startingPrice: tool.startingPrice?.trim() || (tool.pricing === 'Free' ? 'Free' : legacyPrice || (tool.pricing === 'Enterprise' ? 'Contact sales' : 'Not listed')),
+    freePlan: tool.freePlan ?? (tool.pricing === 'Free' || tool.pricing === 'Freemium'),
+  };
+}
 export interface AISkill { slug: string; name: string; description: string; level: 'Beginner' | 'Intermediate' | 'Advanced'; category: string; tools: string[]; outcomes: string[] }
 export const categories: Category[] = [
   ['writing-content','Writing & Content','✎',324,'Create, edit, and refine content',['Copywriting','Editing','SEO Writing']],
