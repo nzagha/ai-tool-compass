@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useCatalog } from '@/components/catalog-provider';
 import { ImageUpload } from '@/components/image-upload';
-import { slugify, type Tool } from '@/lib/catalog';
+import { getToolPricing, slugify, type Tool } from '@/lib/catalog';
 import { verificationStates, statuses, type RecordStatus } from '@/lib/admin-model';
 
 const blank: Tool = { slug: '', name: '', monogram: '', logoColor: 'ink', tagline: '', description: '', category: '', subcategory: '', useCases: [], verticals: [], pricing: 'Freemium', priceDetail: '', verification: 'Unverified', claim: 'Unclaimed', rating: { average: 0, count: 0, distribution: [0, 0, 0, 0, 0] }, score: { total: 0, capability: 0, satisfaction: 0, value: 0, ease: 0, reliability: 0, businessFit: 0, confidence: 0 }, rank: 99, trending: 0, platform: ['Web'], api: false, features: [], pros: [], cons: [], integrations: [], website: '', updated: '', verified: '', verifiedBy: 'aiBean admin team', limitations: [], launched: new Date().getFullYear() };
@@ -17,7 +17,7 @@ const Box = ({ title, children }: { title: string; children: ReactNode }) => <fi
 
 export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: { initial?: Partial<Tool> | undefined; status: RecordStatus; onSave: (t: Tool, status: RecordStatus) => void; onCancel: () => void }) {
   const { categories, useCases, verticals } = useCatalog();
-  const [t, setT] = useState<Tool>({ ...blank, ...initial, rating: { ...blank.rating, ...initial?.rating }, score: { ...blank.score, ...initial?.score } } as Tool);
+  const [t, setT] = useState<Tool>({ ...blank, ...initial, ...getToolPricing({ ...blank, ...initial }), rating: { ...blank.rating, ...initial?.rating }, score: { ...blank.score, ...initial?.score } });
   const [status, setStatus] = useState<RecordStatus>(initialStatus);
   const set = <K extends keyof Tool>(k: K, v: Tool[K]) => setT(p => ({ ...p, [k]: v }));
   const subs = categories.find(c => c.name === t.category)?.subcategories ?? [];
@@ -43,11 +43,13 @@ export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: {
       <L label="Category"><select className={sel} value={t.category} onChange={e => setT(p => ({ ...p, category: e.target.value, subcategory: '' }))}><option value="">Choose…</option>{categories.map(c => <option key={c.slug}>{c.name}</option>)}</select></L>
       <L label="Subcategory"><select className={sel} value={t.subcategory} onChange={e => set('subcategory', e.target.value)}><option value="">Choose…</option>{subs.map(s => <option key={s.slug}>{s.name}</option>)}</select></L>
       <div className="sm:col-span-2"><p className="text-sm font-semibold">Use cases</p><div className="flex flex-wrap gap-2 mt-2">{useCases.map(u => <button type="button" key={u.slug} onClick={() => toggle('useCases', u.name)} className={`text-xs border rounded-full px-3 py-1 ${t.useCases.includes(u.name) ? 'bg-primary text-primary-foreground border-primary' : 'border-border'}`}>{u.name}</button>)}</div></div>
-      <div className="sm:col-span-2"><p className="text-sm font-semibold">Business verticals</p><div className="flex flex-wrap gap-2 mt-2">{verticals.map(v => <button type="button" key={v.slug} onClick={() => toggle('verticals', v.name)} className={`text-xs border rounded-full px-3 py-1 ${t.verticals.includes(v.name) ? 'bg-primary text-primary-foreground border-primary' : 'border-border'}`}>{v.name}</button>)}</div></div>
+      <div className="sm:col-span-2"><p className="text-sm font-semibold">Industries</p><div className="flex flex-wrap gap-2 mt-2">{verticals.map(v => <Button variant="outline" size="sm" type="button" key={v.slug} aria-pressed={t.verticals.includes(v.name)} onClick={() => toggle('verticals', v.name)} className={t.verticals.includes(v.name) ? 'bg-primary text-primary-foreground border-primary' : ''}>{v.name}</Button>)}</div></div>
     </Box>
     <Box title="Pricing & platform">
       <L label="Pricing model"><select className={sel} value={t.pricing} onChange={e => set('pricing', e.target.value as Tool['pricing'])}>{['Free', 'Freemium', 'Paid', 'Enterprise'].map(c => <option key={c}>{c}</option>)}</select></L>
       <L label="Price details"><Input className="mt-1" value={t.priceDetail} onChange={e => set('priceDetail', e.target.value)} /></L>
+      <L label="Starting price"><Input className="mt-1" placeholder="e.g. $20/month or Contact sales" value={t.startingPrice ?? ''} onChange={e => set('startingPrice', e.target.value)} /></L>
+      <label className="text-sm font-semibold flex items-center gap-2"><input type="checkbox" checked={t.freePlan ?? false} onChange={e => set('freePlan', e.target.checked)} /> Free plan</label>
       <label className="text-sm font-semibold flex items-center gap-2"><input type="checkbox" checked={t.api} onChange={e => set('api', e.target.checked)} /> Has a public API</label>
     </Box>
     <Box title="aiBean Verified & ownership">
@@ -60,7 +62,7 @@ export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: {
     <Box title="Ranking & scores (0–100)">
       <L label="Rank"><Input type="number" min={1} className="mt-1" value={t.rank} onChange={e => set('rank', Number(e.target.value))} /></L>
       <L label="Trending"><Input type="number" min={0} max={100} className="mt-1" value={t.trending} onChange={e => set('trending', Number(e.target.value))} /></L>
-      {scoreKeys.map(k => <L key={k} label={scoreLabels[k] ?? k[0]!.toUpperCase() + k.slice(1)}><Input type="number" min={0} max={100} className="mt-1" value={t.score[k]} onChange={e => set('score', { ...t.score, [k]: Number(e.target.value) })} /></L>)}
+      {scoreKeys.map(k => <L key={k} label={scoreLabels[k] ?? k.charAt(0).toUpperCase() + k.slice(1)}><Input type="number" min={0} max={100} className="mt-1" value={t.score[k]} onChange={e => set('score', { ...t.score, [k]: Number(e.target.value) })} /></L>)}
     </Box>
     <Box title="User reviews summary">
       <L label="Average rating (0–5)"><Input type="number" step="0.1" min={0} max={5} className="mt-1" value={t.rating.average} onChange={e => set('rating', { ...t.rating, average: Number(e.target.value) })} /></L>
