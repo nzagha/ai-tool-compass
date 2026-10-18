@@ -72,8 +72,10 @@ function Records({ title, section, kind, records, refresh }: { title: string; se
   function actions(r: Rec) {
     const b: [string, () => void][] = [];
     if (section === 'verification') {
+      b.push(['Mark aiBean Verified', () => void put({ ...base(r), payload: { ...p(r), verification: 'aiBean Verified', verified: today, verifiedBy: 'aiBean admin team' } })]);
       b.push(['Mark Human Reviewed', () => void put({ ...base(r), payload: { ...p(r), verification: 'Human Reviewed', verified: today, verifiedBy: 'aiBean admin team' } })]);
       b.push(['Needs reverification', () => void put({ ...base(r), payload: { ...p(r), verification: 'Needs Reverification' } })]);
+      b.push(['Mark Unverified', () => void put({ ...base(r), payload: { ...p(r), verification: 'Unverified' } })]);
     } else if (r.status === 'pending' || r.status === 'flagged') {
       b.push(['Approve', () => void put({ ...base(r), status: kind === 'review' ? 'published' : 'approved', payload: p(r) })]);
       b.push(['Reject', () => void put({ ...base(r), status: 'rejected', payload: p(r) })]);

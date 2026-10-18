@@ -1,4 +1,4 @@
-export type VerificationStatus = 'Unverified' | 'Auto-Checked' | 'Human Reviewed' | 'Vendor Confirmed' | 'Needs Reverification';
+export type VerificationStatus = 'Unverified' | 'Auto-Checked' | 'Human Reviewed' | 'Vendor Confirmed' | 'aiBean Verified' | 'Needs Reverification';
 export type ClaimStatus = 'Unclaimed' | 'Claim Pending' | 'Claimed' | 'Claim Disputed';
 export type PricingModel = 'Free' | 'Freemium' | 'Paid' | 'Enterprise';
 export interface RankingScore { total: number; capability: number; satisfaction: number; value: number; ease: number; reliability: number; businessFit: number; confidence: number }
