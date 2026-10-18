@@ -18,3 +18,5 @@
 - Keep the user control panel under the client-gated `_authenticated` layout; authenticated account functions scope profile and contribution operations to context.userId so members cannot access each other's records.
 - Reuse shared discovery state for the account workspace and explicitly distinguish browser-local saves from persisted profile and contribution records; this preserves existing collections without implying cross-device sync.
 - Keep starting price and free-plan availability in tool payloads with a shared legacy pricing fallback; admin edits, details and comparisons must agree without requiring a schema migration.
+
+- Derive public ownership status from database-maintained claim-state catalog entries, including sample-only tools; keep claimant details private and confirm ownership only through admin approval.
