@@ -47,7 +47,7 @@ export function ToolForm({ initial, status: initialStatus, onSave, onCancel }: {
     </Box>
     <Box title="Pricing & platform">
       <L label="Pricing model"><select className={sel} value={t.pricing} onChange={e => set('pricing', e.target.value as Tool['pricing'])}>{['Free', 'Freemium', 'Paid', 'Enterprise'].map(c => <option key={c}>{c}</option>)}</select></L>
-      <L label="Price details"><Input className="mt-1" value={t.priceDetail} onChange={e => set('priceDetail', e.target.value)} /></L>
+      <L label="Enterprise Price details"><Input className="mt-1" value={t.priceDetail} onChange={e => set('priceDetail', e.target.value)} /></L>
       <L label="Starting price"><Input className="mt-1" placeholder="e.g. $20/month or Contact sales" value={t.startingPrice ?? ''} onChange={e => set('startingPrice', e.target.value)} /></L>
       <label className="text-sm font-semibold flex items-center gap-2"><input type="checkbox" checked={t.freePlan ?? false} onChange={e => set('freePlan', e.target.checked)} /> Free plan</label>
       <label className="text-sm font-semibold flex items-center gap-2"><input type="checkbox" checked={t.api} onChange={e => set('api', e.target.checked)} /> Has a public API</label>
