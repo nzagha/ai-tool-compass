@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PageIntro } from '@/components/catalog-ui';
-import { tools } from '@/lib/catalog';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCatalog } from '@/components/catalog-provider';
 import { meta } from '@/lib/meta';
 import { useAuth } from '@/components/auth-provider';
@@ -25,14 +25,16 @@ function Claim(){const {tools}=useCatalog();
   const [done, setDone] = useState(false);
   const [f, setF] = useState({ tool: initial, name: '', role: '', email: '', method: 'Domain email', evidence: '' });
   const { user } = useAuth();
+  const qc = useQueryClient();
   const [files, setFiles] = useState<EvidenceFile[]>([]);
   const [sending, setSending] = useState(false);
   const [err, setErr] = useState('');
   const submit = async () => {
-    if (!user) { setDone(true); return; }
+    if (!user) { setErr('Sign in to submit your ownership claim.'); return; }
     setSending(true); setErr('');
     try {
       await createContribution({ data: { kind: 'claim', title: `Claim ${tool?.name ?? f.tool}`, payload: { toolSlug: f.tool, name: f.name, role: f.role, email: f.email, method: f.method, evidence: f.evidence || 'See attached files', attachments: files } } });
+      await Promise.all([qc.invalidateQueries({ queryKey: ['public-catalog'] }), qc.invalidateQueries({ queryKey: ['my-account'] }), qc.invalidateQueries({ queryKey: ['admin'] })]);
       setDone(true);
     } catch (e) { setErr(e instanceof Error ? e.message : 'Could not send your claim.'); }
     finally { setSending(false); }
@@ -46,7 +48,7 @@ function Claim(){const {tools}=useCatalog();
     <div className="max-w-xl mx-auto px-5 pt-20 text-center">
       <CheckCircle2 className="size-10 text-primary mx-auto" />
       <h1 className="font-display text-3xl font-semibold mt-5">Claim received.</h1>
-      <p className="text-ink-soft mt-3">{tool?.name} now shows <strong>Claim Pending</strong>. An aiBean admin checks your proof, usually within 3 business days, then marks it Claimed.</p>
+      <p className="text-ink-soft mt-3">Your claim for {tool?.name} is saved and awaiting admin review. The listing shows <strong>{tool?.claim === 'Claimed' ? 'Claimed' : 'Claim Pending'}</strong>. Ownership is confirmed only after approval.</p>
       <Button asChild className="mt-8"><Link to="/vendor">Back to vendors</Link></Button>
     </div>
   );
@@ -80,7 +82,7 @@ function Claim(){const {tools}=useCatalog();
       </div>
       <div className="flex justify-between mt-6">
         <Button variant="ghost" disabled={step === 0} onClick={() => setStep(step - 1)}><ArrowLeft />Back</Button>
-        {step < 3 ? <Button disabled={!valid} onClick={() => setStep(step + 1)}>Continue <ArrowRight /></Button> : <Button disabled={sending} onClick={() => void submit()}>{sending ? 'Sending…' : 'Submit claim'}</Button>}
+        {step < 3 ? <Button disabled={!valid} onClick={() => setStep(step + 1)}>Continue <ArrowRight /></Button> : user ? <Button disabled={sending} onClick={() => void submit()}>{sending ? 'Sending…' : 'Submit claim'}</Button> : <Button asChild><Link to="/login">Sign in to submit claim</Link></Button>}
       </div>
       {err && <p className="text-sm text-destructive mt-4">{err}</p>}
       {!user && <p className="text-xs text-muted-foreground mt-6">Sign in so your claim and files are saved to your account for admin review.</p>}

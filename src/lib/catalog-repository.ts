@@ -11,5 +11,11 @@ function merge<T extends {slug:string}>(base:T[],kind:string,rows:PublicCatalogR
 }
 export function resolveCatalog(rows:PublicCatalogRow[]){
   const nextReviews=merge(reviews.map(r=>({...r,slug:r.id})),'review',rows);
-  return {tools:merge<Tool>(tools,'tool',rows),skills:merge<AISkill>(skills,'skill',rows),categories:merge<Category>(categories,'category',rows),useCases:merge<UseCase>(useCases,'use-case',rows),verticals:merge<Vertical>(verticals,'vertical',rows),reviews:nextReviews as Review[],placements:rows.filter(r=>r.kind==='placement'&&r.enabled)};
+  const claimStates = new Map(rows.filter(r => r.kind === 'claim-state' && r.enabled).map(r => [r.slug, r.payload]));
+  const nextTools = merge<Tool>(tools,'tool',rows).map(tool => {
+    const state = claimStates.get(tool.slug);
+    const claim = state && typeof state === 'object' && !Array.isArray(state) ? state['claim'] : undefined;
+    return claim === 'Claimed' || claim === 'Claim Pending' || claim === 'Unclaimed' ? { ...tool, claim } : tool;
+  });
+  return {tools:nextTools as Tool[],skills:merge<AISkill>(skills,'skill',rows),categories:merge<Category>(categories,'category',rows),useCases:merge<UseCase>(useCases,'use-case',rows),verticals:merge<Vertical>(verticals,'vertical',rows),reviews:nextReviews as Review[],placements:rows.filter(r=>r.kind==='placement'&&r.enabled)};
 }

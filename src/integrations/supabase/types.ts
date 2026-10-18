@@ -168,6 +168,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      sync_tool_claim_state: {
+        Args: { target_slug: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

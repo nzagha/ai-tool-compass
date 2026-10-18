@@ -36,6 +36,13 @@
       "when": 1792345144743,
       "tag": "0004_claim_evidence_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792346291958,
+      "tag": "0005_sync_claim_ownership_status",
+      "breakpoints": true
     }
   ]
 }

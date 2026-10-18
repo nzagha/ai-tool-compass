@@ -94,7 +94,7 @@ function ContributionForm({ kind, onDone }: { kind: Kind; onDone: () => void }) 
     const title = kind === 'submission' ? form['name'] : form['title'] || `${kind === 'claim' ? 'Ownership claim' : 'Issue report'}: ${tools.find(t => t.slug === form['toolSlug'])?.name ?? ''}`;
     const result = contributionInput.safeParse({ kind, title, payload: { ...form, author: user?.user_metadata['display_name'] || 'aiBean member', rating: Number(form['rating']), date: new Date().toISOString().slice(0, 10) } });
     if (!result.success) { setError(result.error.issues.map(i => i.message).join(' ')); return; }
-    setBusy(true); try { await send({ data: result.data }); await Promise.all([qc.invalidateQueries({ queryKey: ['my-account'] }), qc.invalidateQueries({ queryKey: ['admin'] })]); onDone(); } catch (err) { setError(err instanceof Error ? err.message : 'Could not send request.'); } finally { setBusy(false); }
+    setBusy(true); try { await send({ data: result.data }); await Promise.all([qc.invalidateQueries({ queryKey: ['my-account'] }), qc.invalidateQueries({ queryKey: ['admin'] }), qc.invalidateQueries({ queryKey: ['public-catalog'] })]); onDone(); } catch (err) { setError(err instanceof Error ? err.message : 'Could not send request.'); } finally { setBusy(false); }
   }}>
     <fieldset disabled={busy} className="space-y-4"><legend className="font-semibold mb-4">{kind === 'review' ? 'New review' : kind === 'claim' ? 'New ownership claim' : kind === 'report' ? 'Report a listing issue' : 'New tool submission'}</legend>
     {kind !== 'submission' && select('toolSlug', 'AI tool', tools.map(t => ({ value: t.slug, name: t.name })))}
