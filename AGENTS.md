@@ -20,3 +20,4 @@
 - Keep starting price and free-plan availability in tool payloads with a shared legacy pricing fallback; admin edits, details and comparisons must agree without requiring a schema migration.
 
 - Derive public ownership status from database-maintained claim-state catalog entries, including sample-only tools; keep claimant details private and confirm ownership only through admin approval.
+- Keep future monetization contracts separate from editorial catalog state and behind replaceable repository/provider adapters; this preserves independent ranking and avoids creating a second billing authority over the original application. Read docs/MONETIZATION_BUILD_CONTEXT.md and the other monetization documents before monetization work.

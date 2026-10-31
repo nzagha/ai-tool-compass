@@ -12,3 +12,5 @@
 - [x] Build and verify a signed-in user control panel aligned with account, discovery, and contribution capabilities.
 - [x] Add organized tool overview, pricing and fit parameters to admin editing, tool details and comparison; verify persistence and display.
 - [x] Repair claim submission, pending/approved status propagation and verify the complete ownership flow.
+- [x] Document monetization Phase 0 inventory, architecture, sources, decisions and qualified Phase 1 readiness; stopped before implementation.
+- [ ] Complete monetization source reconciliation after missing package files 01–09 and direct Master Plan are supplied.
