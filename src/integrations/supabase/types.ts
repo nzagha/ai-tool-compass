@@ -7,11 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.18"
-  }
   public: {
     Tables: {
       admin_audit: {
@@ -74,6 +69,39 @@ export type Database = {
         }
         Relationships: []
       }
+      creator_applications: {
+        Row: {
+          created_at: string
+          id: string
+          pitch: string
+          review_reason: string | null
+          reviewed_at: string | null
+          reviewer_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pitch: string
+          review_reason?: string | null
+          reviewed_at?: string | null
+          reviewer_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pitch?: string
+          review_reason?: string | null
+          reviewed_at?: string | null
+          reviewer_id?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       directory_records: {
         Row: {
           created_at: string
@@ -131,6 +159,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_capabilities: {
+        Row: {
+          capability: string
+          granted_at: string
+          granted_by: string | null
+          user_id: string
+        }
+        Insert: {
+          capability: string
+          granted_at?: string
+          granted_by?: string | null
+          user_id: string
+        }
+        Update: {
+          capability?: string
+          granted_at?: string
+          granted_by?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -149,17 +198,63 @@ export type Database = {
         }
         Relationships: []
       }
+      vendor_access: {
+        Row: {
+          claim_id: string | null
+          granted_at: string
+          tool_slug: string
+          user_id: string
+        }
+        Insert: {
+          claim_id?: string | null
+          granted_at?: string
+          tool_slug: string
+          user_id: string
+        }
+        Update: {
+          claim_id?: string | null
+          granted_at?: string
+          tool_slug?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_access_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "directory_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      has_capability: {
+        Args: { _capability: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      owns_tool: {
+        Args: { _tool_slug: string; _user_id: string }
+        Returns: boolean
+      }
+      request_creator_access: { Args: { _pitch: string }; Returns: string }
+      review_creator_application: {
+        Args: { _application_id: string; _decision: string; _reason: string }
+        Returns: undefined
+      }
+      revoke_creator_capability: {
+        Args: { _reason: string; _user_id: string }
+        Returns: undefined
       }
       set_member_role: {
         Args: {
@@ -172,6 +267,7 @@ export type Database = {
         Args: { target_slug: string }
         Returns: undefined
       }
+      sync_vendor_access: { Args: { target_slug: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
@@ -306,3 +402,4 @@ export const Constants = {
     },
   },
 } as const
+

@@ -57,3 +57,10 @@ Provider environment/account/products/price mapping, public endpoint and signed 
 - Loopback expiring previews prove neither public deployment nor current uptime.
 
 Phase 0 stops here. No answer is assumed, no missing policy is silently resolved, and no original/provider state is changed.
+
+## Phase 1 updates (2026-11-01)
+- Files 07, 08, 09 received; 01–06 and direct Master Plan **still missing**.
+- Tool identity is the slug here vs text `tool_id` in the original; an ID adapter is needed before any original integration.
+- First-signup-admin bootstrap removed in the draft. Decide before accepting how the live app's existing admin is preserved (it is unaffected because it already exists).
+- Teaser vs full price list: public page shows only the owner-approved Featured offer; full proposed list is login-gated. Confirm.
+- Creator capability via in-app admin approval is used here; file 09 says an operator procedure is separately required in the original — confirm whether admin approval is sufficient.

@@ -33,7 +33,7 @@ function Panel() {
   const refresh = () => { void qc.invalidateQueries({ queryKey: ['admin'] }); void qc.invalidateQueries({ queryKey: ['public-catalog'] }); };
   const groups = useMemo(() => Array.from(new Set(sections.map(s => s.group))), []);
   return <div className="max-w-[1400px] mx-auto px-5 lg:px-10 py-10 grid lg:grid-cols-[220px_1fr] gap-10">
-    <aside className="space-y-6">{groups.map(g => <div key={g}><p className="text-xs font-bold text-muted-foreground uppercase mb-2">{g}</p>{sections.filter(s => s.group === g).map(s => <button key={s.key} onClick={() => setSection(s.key)} className={`block w-full text-left text-sm px-3 py-1.5 rounded-md ${section === s.key ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}>{s.label}</button>)}</div>)}</aside>
+    <aside className="space-y-6"><Link to="/admin-monetization" className="block text-sm font-semibold text-primary px-3">Plans & access →</Link>{groups.map(g => <div key={g}><p className="text-xs font-bold text-muted-foreground uppercase mb-2">{g}</p>{sections.filter(s => s.group === g).map(s => <button key={s.key} onClick={() => setSection(s.key)} className={`block w-full text-left text-sm px-3 py-1.5 rounded-md ${section === s.key ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}>{s.label}</button>)}</div>)}</aside>
     <main>{isLoading ? <p>Loading…</p> : error ? <p className="text-destructive">{(error as Error).message}</p> : data && <Section section={section} data={data as unknown as Snapshot} refresh={refresh} />}</main>
   </div>;
 }

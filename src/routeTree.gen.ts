@@ -17,6 +17,7 @@ import { Route as ClaimRouteImport } from './routes/claim'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as RankingsRouteImport } from './routes/rankings'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SkillsRouteImport } from './routes/skills'
@@ -25,10 +26,16 @@ import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as UseCasesRouteImport } from './routes/use-cases'
 import { Route as VendorRouteImport } from './routes/vendor'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated.account'
+import { Route as AuthenticatedAdminMonetizationRouteImport } from './routes/_authenticated.admin-monetization'
+import { Route as AuthenticatedCreatorRouteImport } from './routes/_authenticated.creator'
+import { Route as AuthenticatedMembershipRouteImport } from './routes/_authenticated.membership'
+import { Route as AuthenticatedVendorStudioRouteImport } from './routes/_authenticated.vendor-studio'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
 import { Route as UseCasesSlugRouteImport } from './routes/use-cases.$slug'
+import { Route as AuthenticatedVendorStudioIndexRouteImport } from './routes/_authenticated.vendor-studio.index'
+import { Route as AuthenticatedVendorStudioSlugRouteImport } from './routes/_authenticated.vendor-studio.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -67,6 +74,11 @@ const CompareRoute = CompareRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RankingsRoute = RankingsRouteImport.update({
@@ -109,6 +121,28 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAdminMonetizationRoute =
+  AuthenticatedAdminMonetizationRouteImport.update({
+    id: '/admin-monetization',
+    path: '/admin-monetization',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedCreatorRoute = AuthenticatedCreatorRouteImport.update({
+  id: '/creator',
+  path: '/creator',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMembershipRoute = AuthenticatedMembershipRouteImport.update({
+  id: '/membership',
+  path: '/membership',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedVendorStudioRoute =
+  AuthenticatedVendorStudioRouteImport.update({
+    id: '/vendor-studio',
+    path: '/vendor-studio',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -129,6 +163,18 @@ const UseCasesSlugRoute = UseCasesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => UseCasesRoute,
 } as any)
+const AuthenticatedVendorStudioIndexRoute =
+  AuthenticatedVendorStudioIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedVendorStudioRoute,
+  } as any)
+const AuthenticatedVendorStudioSlugRoute =
+  AuthenticatedVendorStudioSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => AuthenticatedVendorStudioRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -138,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/rankings': typeof RankingsRoute
   '/saved': typeof SavedRoute
   '/skills': typeof SkillsRoute
@@ -146,10 +193,16 @@ export interface FileRoutesByFullPath {
   '/use-cases': typeof UseCasesRouteWithChildren
   '/vendor': typeof VendorRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/admin-monetization': typeof AuthenticatedAdminMonetizationRoute
+  '/creator': typeof AuthenticatedCreatorRoute
+  '/membership': typeof AuthenticatedMembershipRoute
+  '/vendor-studio': typeof AuthenticatedVendorStudioRouteWithChildren
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
   '/tools/': typeof ToolsIndexRoute
+  '/vendor-studio/$slug': typeof AuthenticatedVendorStudioSlugRoute
+  '/vendor-studio/': typeof AuthenticatedVendorStudioIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -159,6 +212,7 @@ export interface FileRoutesByTo {
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/rankings': typeof RankingsRoute
   '/saved': typeof SavedRoute
   '/skills': typeof SkillsRoute
@@ -166,10 +220,15 @@ export interface FileRoutesByTo {
   '/use-cases': typeof UseCasesRouteWithChildren
   '/vendor': typeof VendorRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/admin-monetization': typeof AuthenticatedAdminMonetizationRoute
+  '/creator': typeof AuthenticatedCreatorRoute
+  '/membership': typeof AuthenticatedMembershipRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
   '/tools': typeof ToolsIndexRoute
+  '/vendor-studio/$slug': typeof AuthenticatedVendorStudioSlugRoute
+  '/vendor-studio': typeof AuthenticatedVendorStudioIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -181,6 +240,7 @@ export interface FileRoutesById {
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/login': typeof LoginRoute
+  '/pricing': typeof PricingRoute
   '/rankings': typeof RankingsRoute
   '/saved': typeof SavedRoute
   '/skills': typeof SkillsRoute
@@ -189,10 +249,16 @@ export interface FileRoutesById {
   '/use-cases': typeof UseCasesRouteWithChildren
   '/vendor': typeof VendorRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/admin-monetization': typeof AuthenticatedAdminMonetizationRoute
+  '/_authenticated/creator': typeof AuthenticatedCreatorRoute
+  '/_authenticated/membership': typeof AuthenticatedMembershipRoute
+  '/_authenticated/vendor-studio': typeof AuthenticatedVendorStudioRouteWithChildren
   '/categories/$slug': typeof CategoriesSlugRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
   '/tools/': typeof ToolsIndexRoute
+  '/_authenticated/vendor-studio/$slug': typeof AuthenticatedVendorStudioSlugRoute
+  '/_authenticated/vendor-studio/': typeof AuthenticatedVendorStudioIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -204,6 +270,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/compare'
     | '/login'
+    | '/pricing'
     | '/rankings'
     | '/saved'
     | '/skills'
@@ -212,10 +279,16 @@ export interface FileRouteTypes {
     | '/use-cases'
     | '/vendor'
     | '/account'
+    | '/admin-monetization'
+    | '/creator'
+    | '/membership'
+    | '/vendor-studio'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
     | '/tools/'
+    | '/vendor-studio/$slug'
+    | '/vendor-studio/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -225,6 +298,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/compare'
     | '/login'
+    | '/pricing'
     | '/rankings'
     | '/saved'
     | '/skills'
@@ -232,10 +306,15 @@ export interface FileRouteTypes {
     | '/use-cases'
     | '/vendor'
     | '/account'
+    | '/admin-monetization'
+    | '/creator'
+    | '/membership'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
     | '/tools'
+    | '/vendor-studio/$slug'
+    | '/vendor-studio'
   id:
     | '__root__'
     | '/'
@@ -246,6 +325,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/compare'
     | '/login'
+    | '/pricing'
     | '/rankings'
     | '/saved'
     | '/skills'
@@ -254,10 +334,16 @@ export interface FileRouteTypes {
     | '/use-cases'
     | '/vendor'
     | '/_authenticated/account'
+    | '/_authenticated/admin-monetization'
+    | '/_authenticated/creator'
+    | '/_authenticated/membership'
+    | '/_authenticated/vendor-studio'
     | '/categories/$slug'
     | '/tools/$slug'
     | '/use-cases/$slug'
     | '/tools/'
+    | '/_authenticated/vendor-studio/$slug'
+    | '/_authenticated/vendor-studio/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -269,6 +355,7 @@ export interface RootRouteChildren {
   CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
   LoginRoute: typeof LoginRoute
+  PricingRoute: typeof PricingRoute
   RankingsRoute: typeof RankingsRoute
   SavedRoute: typeof SavedRoute
   SkillsRoute: typeof SkillsRoute
@@ -336,6 +423,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rankings': {
       id: '/rankings'
       path: '/rankings'
@@ -392,6 +486,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin-monetization': {
+      id: '/_authenticated/admin-monetization'
+      path: '/admin-monetization'
+      fullPath: '/admin-monetization'
+      preLoaderRoute: typeof AuthenticatedAdminMonetizationRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/creator': {
+      id: '/_authenticated/creator'
+      path: '/creator'
+      fullPath: '/creator'
+      preLoaderRoute: typeof AuthenticatedCreatorRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/membership': {
+      id: '/_authenticated/membership'
+      path: '/membership'
+      fullPath: '/membership'
+      preLoaderRoute: typeof AuthenticatedMembershipRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/vendor-studio': {
+      id: '/_authenticated/vendor-studio'
+      path: '/vendor-studio'
+      fullPath: '/vendor-studio'
+      preLoaderRoute: typeof AuthenticatedVendorStudioRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/categories/$slug': {
       id: '/categories/$slug'
       path: '/$slug'
@@ -420,15 +542,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UseCasesSlugRouteImport
       parentRoute: typeof UseCasesRoute
     }
+    '/_authenticated/vendor-studio/': {
+      id: '/_authenticated/vendor-studio/'
+      path: '/'
+      fullPath: '/vendor-studio/'
+      preLoaderRoute: typeof AuthenticatedVendorStudioIndexRouteImport
+      parentRoute: typeof AuthenticatedVendorStudioRoute
+    }
+    '/_authenticated/vendor-studio/$slug': {
+      id: '/_authenticated/vendor-studio/$slug'
+      path: '/$slug'
+      fullPath: '/vendor-studio/$slug'
+      preLoaderRoute: typeof AuthenticatedVendorStudioSlugRouteImport
+      parentRoute: typeof AuthenticatedVendorStudioRoute
+    }
   }
 }
 
+interface AuthenticatedVendorStudioRouteChildren {
+  AuthenticatedVendorStudioSlugRoute: typeof AuthenticatedVendorStudioSlugRoute
+  AuthenticatedVendorStudioIndexRoute: typeof AuthenticatedVendorStudioIndexRoute
+}
+
+const AuthenticatedVendorStudioRouteChildren: AuthenticatedVendorStudioRouteChildren =
+  {
+    AuthenticatedVendorStudioSlugRoute: AuthenticatedVendorStudioSlugRoute,
+    AuthenticatedVendorStudioIndexRoute: AuthenticatedVendorStudioIndexRoute,
+  }
+
+const AuthenticatedVendorStudioRouteWithChildren =
+  AuthenticatedVendorStudioRoute._addFileChildren(
+    AuthenticatedVendorStudioRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedAdminMonetizationRoute: typeof AuthenticatedAdminMonetizationRoute
+  AuthenticatedCreatorRoute: typeof AuthenticatedCreatorRoute
+  AuthenticatedMembershipRoute: typeof AuthenticatedMembershipRoute
+  AuthenticatedVendorStudioRoute: typeof AuthenticatedVendorStudioRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedAdminMonetizationRoute: AuthenticatedAdminMonetizationRoute,
+  AuthenticatedCreatorRoute: AuthenticatedCreatorRoute,
+  AuthenticatedMembershipRoute: AuthenticatedMembershipRoute,
+  AuthenticatedVendorStudioRoute: AuthenticatedVendorStudioRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -480,6 +640,7 @@ const rootRouteChildren: RootRouteChildren = {
   CommunityRoute: CommunityRoute,
   CompareRoute: CompareRoute,
   LoginRoute: LoginRoute,
+  PricingRoute: PricingRoute,
   RankingsRoute: RankingsRoute,
   SavedRoute: SavedRoute,
   SkillsRoute: SkillsRoute,
