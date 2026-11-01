@@ -14,3 +14,4 @@
 - [x] Repair claim submission, pending/approved status propagation and verify the complete ownership flow.
 - [x] Document monetization Phase 0 inventory, architecture, sources, decisions and qualified Phase 1 readiness; stopped before implementation.
 - [ ] Complete monetization source reconciliation after missing package files 01–09 and direct Master Plan are supplied.
+- [ ] Implement supplied Phase 2 pricing, memberships and server-enforced quotas in the existing isolated Phase 1 draft only; blocked here because Phase 1 is still running and continuation must occur in its draft chat. Keep checkout disabled and stop after Phase 2.
