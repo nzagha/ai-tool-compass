@@ -43,6 +43,13 @@
       "when": 1792346291958,
       "tag": "0005_sync_claim_ownership_status",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793491830265,
+      "tag": "0006_monetization_phase1_access_foundation",
+      "breakpoints": true
     }
   ]
 }

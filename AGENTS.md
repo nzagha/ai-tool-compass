@@ -21,3 +21,7 @@
 
 - Derive public ownership status from database-maintained claim-state catalog entries, including sample-only tools; keep claimant details private and confirm ownership only through admin approval.
 - Keep future monetization contracts separate from editorial catalog state and behind replaceable repository/provider adapters; this preserves independent ranking and avoids creating a second billing authority over the original application. Read docs/MONETIZATION_BUILD_CONTEXT.md and the other monetization documents before monetization work.
+- Keep privileges out of profiles: admin lives in user_roles, Creator in user_capabilities, Tool ownership in vendor_access (one owner per tool, written only from admin-approved claims); clients get SELECT only and change these through SECURITY DEFINER RPCs, so no client or payment path can grant access.
+- Monetization areas share `src/components/monetization/ui.tsx` and every area re-checks access in `src/lib/monetization.functions.ts`; navigation visibility is never the security boundary.
+- Money is integer minor units through `src/lib/monetization/money.ts`; prices are versioned references with authority flags in `src/lib/monetization/model.ts`, not a pricing engine, so proposed prices can't be mistaken for live offers.
+- Synthetic QA accounts come only from `scripts/qa-fixtures.ts`, which refuses non-local backends and keeps generated passwords out of the repo.

@@ -15,7 +15,7 @@
 | Persistent five deliverables created | Complete | docs/MONETIZATION_*.md |
 | No real payments / hosted migrations / provider activation | Satisfied for this task | No payment, data, migration or provider tools called; existing site and services left unchanged |
 
-## Phase 1 readiness — not started
+## Phase 1 readiness (historical, superseded below)
 **Ready:** bounded non-financial contract/design work can be scoped from this baseline.
 **Not ready for full implementation approval:** missing files 01–09, exact schema and Featured lifecycle, direct-source reconciliation and a separate Phase 1 request.
 **Not ready for checkout/paid subscriptions/live launch:** commercial approvals, approved provider environment/configuration, exact required schema authorization and genuine provider tests remain absent. No provider account or current hosted monetization state was inspected.
@@ -33,3 +33,21 @@ Request the missing nine Markdown documents and relevant direct Master Plan/amen
 
 ## Verification performed in Phase 0
 Read every supplied Markdown in full; read-only project source audit distinguished current TanStack directory from original Next.js evidence. Programmatic documentation checks verify five files, 58 IDs, 29 status rows and 23 gap rows; references/authority qualifiers checked. Existing build log showed build OK. No app code changed, so no new runtime flow or pricing rule implementation was claimed/tested; no manual build/typecheck or live service verification performed.
+
+## Phase 1 — foundation delivered in isolated draft (2026-11-01)
+**STOP after Phase 1. Draft not accepted, not published.** Draft has its own test database (platform drafts list + `SUPABASE_URL`/psql at 127.0.0.1). No original aiBean database, provider or real payment touched.
+
+| Acceptance item | Status | Evidence |
+|---|---|---|
+| Navigation functional | Done | Header "Pricing" link, footer link, account page links, admin panel link, shared area nav |
+| Five area shells | Done | `/pricing`, `/membership`, `/vendor-studio`, `/creator`, `/admin-monetization` |
+| Server-enforced permissions | Done | Server functions re-check role/capability/ownership; RLS + RPCs; no client write grants |
+| Isolated backend operational | Done | Migration 0006 applied to draft DB only |
+| Shared components mobile + desktop | Done | Playwright at 1280×1800 and 390×844, no horizontal overflow on all five areas |
+| No hosted aiBean DB modified | Satisfied | Only draft-local DB used |
+| No real payment | Satisfied | `PAYMENTS_ENABLED=false`; no payment code exists |
+
+**Tests:** `bunx vitest run` — 6 files, **29 tests passed** (17 new in `src/test/monetization.test.ts`: area permissions, owner isolation, payment-never-grants, money formatting, status validation, fixture gating).
+**End-to-end (real sign-in, real server guards, 5 synthetic accounts):** 21 distinct checks passed across runs — signed-out gate on full price list; member denied Vendor/Creator/Admin and another owner's tool; member Creator application; Vendor A sees only own tool and is denied Vendor B's tool; Creator allowed in Creator, denied Vendor; Admin approves application (audited) and is still not a tool owner; approved member then enters Creator; five mobile no-overflow checks.
+**Limitations:** QA passwords live only in `/tmp/qa/credentials.json` (lost on sandbox restart; re-run `bun scripts/qa-fixtures.ts` to rotate). QA display names show as short ids in admin tables. Accepting the draft would apply migration 0006 (and remove first-signup-admin) to the Lovable app's own database. Files 01–06 and Master Plan still missing, so full source reconciliation remains open.
+**Next phase (not started):** Phase 2 isolated commercial persistence — needs explicit request.

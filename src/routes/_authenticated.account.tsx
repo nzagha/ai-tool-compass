@@ -41,7 +41,7 @@ function Account() {
   const [compose, setCompose] = useState(false);
   const selectedTools = tools.filter(t => saved.includes(t.slug));
   return <div className="max-w-[1400px] mx-auto px-5 lg:px-10 py-10">
-    <div className="border-b border-border pb-8 mb-8"><p className="text-xs text-primary font-bold uppercase mb-3">Your aiBean workspace</p><h1 className="font-display text-4xl font-semibold">{data.profile.display_name || 'My account'}</h1><p className="text-sm text-muted-foreground mt-3">{user?.email}</p></div>
+    <div className="border-b border-border pb-8 mb-8"><p className="text-xs text-primary font-bold uppercase mb-3">Your aiBean workspace</p><h1 className="font-display text-4xl font-semibold">{data.profile.display_name || 'My account'}</h1><p className="text-sm text-muted-foreground mt-3">{user?.email}</p><div className="flex flex-wrap gap-2 mt-4"><Button asChild size="sm" variant="outline"><Link to="/membership">Membership & billing</Link></Button><Button asChild size="sm" variant="ghost"><Link to="/vendor-studio">Vendor studio</Link></Button><Button asChild size="sm" variant="ghost"><Link to="/creator">Creator workspace</Link></Button></div></div>
     <div className="grid lg:grid-cols-[220px_1fr] gap-8">
       <aside><nav className="flex flex-wrap lg:flex-col gap-2">{sections.map(s => <Button key={s.key} variant={section === s.key ? 'default' : 'ghost'} className="justify-start" onClick={() => { setSection(s.key); setCompose(false); }}><s.icon className="size-4" />{s.label}</Button>)}</nav></aside>
       <main className="min-w-0">

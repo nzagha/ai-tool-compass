@@ -145,3 +145,6 @@ Automatic Creator payouts; paid Skills/Playbooks/readers; paid Event ticketing; 
 
 ## Completeness qualifier
 All six attachments were read completely. The package calls itself a 14-file set, but files **01–09 were not attached**; the Master Plan DOCX and linked original sources were not read directly. This matrix covers all 58 supplied IDs and all STATUS rows, not a certified complete reconstruction of those missing sources. Phase 0 source reconciliation remains blocked until supplied.
+
+## Phase 1 status overlay (2026-11-01, isolated draft)
+Files 07–09 now received. Implemented in draft: MON-SEC-001 (server authorization), MON-SEC-005 (single owner via `vendor_access`, Creator not self-grantable), non-pay-to-rank invariants as pure helpers + tests, login-gated full price list. Not implemented: MON-SEC-002/003/008/009/010 payment, webhook, affiliate, entitlement and idempotency rules (no payments exist). Original "installed" statuses describe the original app only.
